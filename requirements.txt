@@ -1,0 +1,5 @@
+# Lesaka AI Project Dependencies
+# Python 3.x required
+
+flask==3.0.0
+sqlite3  # built-in but listed for ref
