@@ -1,0 +1,70 @@
+Act as a Principal UI/UX Architect, Database Engineer, and Systems AI Developer. Completely rewrite, structuralize, and generate a production-grade, highly interactive component UI kit and wireframe system for the "Lesaka AI – Remote Cattle Tracking & Telemetry Hub". 
+
+Organize the generated layouts into two explicitly separated, multi-responsive Figma pages to satisfy the specific assessment perspectives of both the CS Panel and the INFS/DM Panel.
+
+---
+
+## DESIGN SYSTEM INVARIANTS
+- Typography: Inter/Poppins sans-serif structural type scale hierarchy. Dark body text (#212121), Light muted text (#6B7280), Neutral canvas background (#F5F5F5), Terminal box background (#0D1117).
+- Palette: Primary Farm Green (#2E7D32), Secondary Tech Blue (#1565C0), Warning/Alert Orange (#FF8F00), Critical Error Red (#D32F2F).
+- Layout Constraints: Create separate viewports for MOBILE LAYOUTS (375px wide with pinned bottom navigation tabs) and WEB/DESKTOP LAYOUTS (1440px wide with a fixed 260px dark green sidebar menu and an active context switcher showing "Andries Mooketsi Moiteelasilo | System Administrator" in the footer container).
+- Layout Resilience: Enforce explicit auto-layout wrapping configurations on all cards and tables to completely eliminate text layer clipping, boundary bleeds, or vertical overflow bugs.
+
+---
+
+========================================================================
+PAGE 1: COMPUTER SCIENCE (CS) VIEWPORTS - "AGENTIC INTELLIGENCE & ORCHESTRATION"
+========================================================================
+Focus on Multi-Agent state tracking, real-time terminal routing traces, and algorithmic validation states.
+
+### Frame 01-Dashboard: Central Management Hub View
+- Component A: KPI Matrix displaying: Total Tracking Nodes (1,240), Active Daemons (1,192), Intercept Exceptions Today (3), Battery Matrix Average (78%).
+- Component B: A prominent Primary Green call-to-action button labeled "Go to Live Geofence Map 🗺️".
+- Component C: Interactive Sandbox trigger panel where selecting a node asset lists its telemetry properties.
+
+### Frame 02-LiveMap: Geospatial Perimeter Interface
+- Component A: Full-width geometric map canvas bounding area tracking polygons, movement vectors, and multi-color status point markers (Green=Nominal, Orange=Warning, Red=Critical).
+- Component B: Floating upper HUD card titled "Main Grazing Camp Alpha | Live Node Feed".
+- Component C: A scrollable, slide-up responsive bottom-sheet logging geofence intersection timelines.
+
+### Frame 04-CattleDetail: Agent Molemo Pathology Profiler
+- Component A: Structural Identity card showing "Asset Tag ID: BW-MUN-1109 | Device Transceiver: #HW-9021".
+- Component B: Interactive Sparkline line graph container displaying "Biological Health & Thermal Trend Graph (7-Day Matrix Window)".
+- Component C: Diagnostic console mapping clinical flags: "Symptom Code: S01_LETHARGY | Action: State Flag Critical Overheat".
+
+### Frame 05-DeviceStatus: Agent Loapi IoT Sensor Daemon
+- Component A: Hardware mesh topology table monitoring live distributed nodes.
+- Component B: Core data rows outlining: [Device Hardware ID string] [Assigned Cattle Tag Link] [Signal Strength dBm Tracker] [Battery Pack Pct].
+- Component C: Dynamic connectivity status badges (Online/Good, Warning/Frame Degradation, Critical Offline/No Signal).
+
+### Frame 06-Alerts: Orchestration Engine Exception Manager
+- Component A: Filtering tab row selector: [All Alerts | Critical Interrupts | Resolved Ledger].
+- Component B: A black, code-styled terminal window titled "LangGraph Supervisor Runtime Execution Trace Log" showing node state conversions: "Supervisor -> ROUTE_TO_MOLEMO_HEALTH -> [END]".
+- Component C: Individual timeline anomaly cards displaying system events ("Boundary Breach at 10:14 AM", "Thermal Stress Anomaly at 08:30 AM") accompanied by a prominent "Resolve Exception" configuration button.
+
+### Frame 07-Reports: Agent Thekiso NDVI Matrix Analyzer
+- Component A: Segmented top-bar control: [Movement Report | Grazing Patterns | Battery Health Matrix | Historical Ledger].
+- Component B: High-fidelity grid layouts providing placeholder mockup areas for analytical line charts, scatter fields, and a green-to-brown NDVI vegetation density heat map.
+
+---
+
+========================================================================
+PAGE 2: INFORMATION SYSTEMS (INFS) VIEWPORTS - "DATA GOVERNANCE & ARCHITECTURE"
+========================================================================
+Focus on relational integrity schemas, 3NF records compliance, secure role permissions (RBAC), and administrative management.
+
+### Frame 03-CattleList: Livestock Asset Registry
+- Component A: Search input controller bar + relational filter chips: [Filter by Breed Profile] [Filter by Pathological Flag Status].
+- Component B: Enterprise relational data grid detailing: Tag ID (e.g., BW-MUN-1109), Breed (Brahman cross), Age, Last Ingestion Timestamp, and battery status metrics.
+
+### Frame 08-Billing: Commercial Subscription Ledger
+- Component A: Data utilization summary row: "Active Plan: Enterprise Site Plan", "1,200 Registered Edge Nodes", "Next Renewal: June 2026".
+- Component B: High-density transactional invoice table tracing database reference lines, flanked by an "Upgrade Node Capacity" primary action button.
+
+### Frame 09-Support: Field Technician Escalation Center
+- Component A: Core operations communication grid containing structural blocks for WhatsApp Link Vector, Tech Support Email Ingestion, and Emergency Voice Dispatch.
+- Component B: Clean accordion list system visualizing Frequently Asked Questions (FAQs) tracking database synchronization recovery loops.
+
+### Frame 10-AdminBackend: Multi-Tenant Infrastructure Panel
+- Component A: Global multi-tenant workspace supervisor selector dropdown menu ("Lesaba AI | Tracking & Veterinary Hub", "Greenfield Ranch").
+- Component B: Active hardware inventory configuration log and automated "Field Installation Checklist" component module with verification check toggles to confirm secure database mapping operations.

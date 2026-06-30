@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 import sqlite3
 from lesaka_validation_engine import LesakaValidationEngine
 from graph_orchestrator import GraphOrchestrator
+import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'lesaka-ai-secret-key-2024'
@@ -13,8 +14,18 @@ orchestrator = GraphOrchestrator('lesaka_edge.db')
 # Routes
 @app.route('/')
 def dashboard():
-    """Main dashboard view - will be updated with Figma design later"""
+    """Main dashboard view - serves React app"""
+    # Try to serve React build if it exists, otherwise fallback to template
+    if os.path.exists('frontend/dist'):
+        return send_from_directory('frontend/dist', 'index.html')
     return render_template('dashboard.html')
+
+@app.route('/<path:path>')
+def serve_react(path):
+    """Serve React static files"""
+    if os.path.exists('frontend/dist'):
+        return send_from_directory('frontend/dist', path)
+    return jsonify({'error': 'File not found'}), 404
 
 @app.route('/api/register_farmer', methods=['POST'])
 def register_farmer():

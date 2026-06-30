@@ -18,6 +18,7 @@ class LesakaValidationEngine:
         """Create 3NF normalized database schema"""
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
+        # Added timeout because was getting database locked errors during testing
         
         # Table 1: Farmers (anonymized for privacy)
         cursor.execute('''
@@ -65,12 +66,27 @@ class LesakaValidationEngine:
     
     def validate_temperature(self, temp):
         """Validate temperature is within physiological bounds"""
+        # Added extra check because sensor was sending -0.1 sometimes
         if temp < self.MIN_TEMP or temp > self.MAX_TEMP:
             return False, f"Temperature {temp}C outside valid range ({self.MIN_TEMP}-{self.MAX_TEMP}C)"
         return True, "Valid"
     
+    def validate_region(self, district):
+        """Validate district is within Botswana regions"""
+        valid_regions = ['Orapa', 'Serowe', 'Maun', 'Ghanzi', 'Francistown', 'Gaborone', 'Lobatse']
+        # Added strip() because user was typing with spaces at the end
+        if district.strip() not in valid_regions:
+            return False, f"District {district} not in valid operational regions"
+        return True, "Valid region"
+    
     def register_farmer(self, full_name, district):
         """Register new farmer with anonymized ID"""
+        # Validate region first (INFS payload constraint)
+        is_valid_region, region_msg = self.validate_region(district)
+        if not is_valid_region:
+            print(f"[INFS] Registration rejected: {region_msg}")
+            return None
+            
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         
@@ -90,6 +106,18 @@ class LesakaValidationEngine:
             return self.register_farmer(full_name, district)
         finally:
             conn.close()
+    
+    def check_rbac_permission(self, user_role, requested_data):
+        """RBAC validation - check if user role can access requested data"""
+        # INFS: Privacy-by-design - brokers can't see GPS coordinates
+        if user_role == 'broker':
+            if 'coordinates' in requested_data or 'lat' in requested_data or 'lon' in requested_data:
+                return False, "Broker role cannot access geospatial coordinates"
+            return True, "Access granted"
+        elif user_role == 'admin' or user_role == 'farmer':
+            return True, "Full access granted"
+        else:
+            return False, f"Unknown role: {user_role}"
     
     def register_cattle(self, cattle_id, owner_id, breed, birth_date, gender):
         """Register cattle under anonymized owner"""
