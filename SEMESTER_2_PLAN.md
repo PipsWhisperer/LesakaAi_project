@@ -1,23 +1,31 @@
-# Lesaka AI - Semester 2 Excellence Plan (INFS 402 + COMP 402)
+# Lesaka AI - Semester 2 Excellence Plan (Dual Major)
+# INFS 402 (Advanced Data Governance) + COMP 402 (Advanced Resilience)
 
 ## Overview
-This document outlines the comprehensive plan to achieve 95-100% grade in Semester 2 by building upon the solid foundation established in Semester 1.
+This document outlines the comprehensive plan for Semester 2 for a double major in Information Systems (INFS 402) and Computer Science (COMP 402). These are two separate 4-credit modules with distinct projects that strategically connect without double-dipping.
 
-## Module Alignment
+## Project Structure
 
-### INFS 402 (Information Systems - Semester 2)
-**Focus:** Advanced Data Governance & Privacy
-- Enhanced RBAC with fine-grained permissions
-- Privacy-by-Design implementation
-- Advanced payload constraints
-- Data encryption and audit logging
+### INFS 402 Project: "Lesaka Advanced Data Governance Framework"
+**Separate Project with INFS-Specific Deliverables**
+- Focus: Advanced RBAC, privacy-by-design, data encryption
+- Repository: INFS_Project/ folder (continued from Semester 1)
+- Dissertation: Dissertation_INFS/ (continued from Semester 1)
+- Assessment: 100% INFS focus (no COMP content)
 
-### COMP 402 (Computer Science - Semester 2)
-**Focus:** Advanced Algorithmic Logic & Resilience
-- True asynchronous implementation
-- Self-healing and resilience patterns
-- Thread safety under load
-- Advanced multi-agent communication
+### COMP 402 Project: "Lesaka Advanced Multi-Agent Orchestration System"
+**Separate Project with COMP-Specific Deliverables**
+- Focus: Async processing, self-healing, thread safety
+- Repository: COMP_Project/ folder (continued from Semester 1)
+- Dissertation: Dissertation_COMP/ (continued from Semester 1)
+- Assessment: 100% COMP focus (no INFS content)
+
+### Integration Strategy
+Projects connect at well-defined integration points:
+- INFS provides secure APIs → COMP respects advanced permissions
+- INFS provides encryption → COMP uses encrypted data
+- Shared frontend demonstrates integration without double-dipping
+- Cross-referencing in documentation shows connection
 
 ## Phase 1: Complete Frontend Integration (Week 1-2)
 
