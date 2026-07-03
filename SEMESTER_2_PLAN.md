@@ -1,7 +1,23 @@
-# Lesaka AI - Semester 2 Excellence Plan (Target: 95-100%)
+# Lesaka AI - Semester 2 Excellence Plan (INFS 402 + COMP 402)
 
 ## Overview
 This document outlines the comprehensive plan to achieve 95-100% grade in Semester 2 by building upon the solid foundation established in Semester 1.
+
+## Module Alignment
+
+### INFS 402 (Information Systems - Semester 2)
+**Focus:** Advanced Data Governance & Privacy
+- Enhanced RBAC with fine-grained permissions
+- Privacy-by-Design implementation
+- Advanced payload constraints
+- Data encryption and audit logging
+
+### COMP 402 (Computer Science - Semester 2)
+**Focus:** Advanced Algorithmic Logic & Resilience
+- True asynchronous implementation
+- Self-healing and resilience patterns
+- Thread safety under load
+- Advanced multi-agent communication
 
 ## Phase 1: Complete Frontend Integration (Week 1-2)
 
@@ -165,13 +181,15 @@ This document outlines the comprehensive plan to achieve 95-100% grade in Semest
 
 ## Assessment Criteria Alignment
 
-### INFS 401/402 (40%)
-- **3NF Validation**: Enhanced schema with migration scripts
-- **RBAC**: Fine-grained permissions with audit logging
+### INFS 402 (Semester 2) - 50%
+**Advanced Data Governance:**
+- **Enhanced RBAC**: Fine-grained permissions with audit logging
+- **Privacy-by-Design**: Data encryption, anonymization, audit trails
 - **Payload Constraints**: Pydantic validation with anomaly detection
 - **Data Governance**: Quality scoring, reconciliation, encryption
 
-### COMP 401/402 (40%)
+### COMP 402 (Semester 2) - 50%
+**Advanced Algorithmic Logic:**
 - **Async Orchestration**: True async/await with connection pools
 - **Self-Healing**: Circuit breakers, retry logic, health checks
 - **Thread Safety**: Proper threading, semaphores, load testing
