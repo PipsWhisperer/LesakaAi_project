@@ -1,0 +1,90 @@
+% Chapter 2: Literature Review
+
+\section{Introduction}
+
+This chapter reviews existing research and systems related to livestock management, IoT in agriculture, data governance frameworks, and multi-agent systems. The review identifies research gaps and establishes the theoretical foundation for the Lesaka AI project.
+
+\section{IoT in Agriculture}
+
+\subsection{Smart Farming Systems}
+
+Smart farming has emerged as a transformative approach to agriculture, leveraging IoT technologies to enhance productivity and sustainability. According to \cite{wolfert2017big}, IoT-enabled agricultural systems can reduce resource consumption by up to 30\% while increasing crop yields through precision monitoring.
+
+\subsection{Livestock Monitoring}
+
+Several studies have explored IoT-based livestock monitoring systems. \cite{riquelme2018smonitor} developed a wireless sensor network for cattle monitoring, focusing on GPS tracking and basic health parameters. However, their system lacked intelligent analysis capabilities and robust data governance mechanisms.
+
+\subsection{Current Limitations}
+
+Existing livestock monitoring systems face several limitations:
+
+\begin{itemize}
+    \item Limited data validation and integrity checks
+    \item Lack of intelligent diagnostic capabilities
+    \item Insufficient privacy protection for farmer data
+    \item Poor integration with decision support systems
+\end{itemize}
+
+\section{Data Governance in Agricultural Systems}
+
+\subsection{Database Normalization}
+
+Third Normal Form (3NF) is a database design principle that eliminates redundancy and ensures data integrity. \cite{date2003database} emphasizes the importance of 3NF in systems requiring high data fidelity, such as agricultural telemetry systems.
+
+\subsection{Privacy-by-Design}
+
+Privacy-by-Design principles, as outlined by \cite{cavoukian2011privacy}, advocate for embedding privacy protections into system architecture from the outset. Agricultural systems must balance data utility with farmer privacy concerns.
+
+\subsection{Role-Based Access Control}
+
+RBAC systems provide fine-grained access control based on user roles \cite{sandhu1996role}. In agricultural contexts, different stakeholders (farmers, veterinarians, brokers) require varying levels of data access.
+
+\section{Multi-Agent Systems}
+
+\subsection{Agent Architectures}
+
+Multi-agent systems (MAS) have been successfully applied in various domains including healthcare \cite{wooldridge2009introduction} and manufacturing \cite{jennings1998agent}. These systems enable distributed decision-making and autonomous problem-solving.
+
+\subsection{Graph-Based Orchestration}
+
+Directed Cyclic Graphs (DCG) provide a framework for modeling complex agent interactions \cite{diest2010graph}. Graph-based orchestration enables flexible routing of tasks among specialized agents based on contextual factors.
+
+\subsection{Self-Healing Systems}
+
+Self-healing systems can automatically detect and recover from failures \cite{ghosh2007self}. In agricultural IoT contexts, self-healing capabilities are crucial for maintaining system reliability in network-constrained environments.
+
+\section{Comparison of Existing Systems}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+\textbf{System} & \textbf{3NF} & \textbf{RBAC} & \textbf{MAS} & \textbf{Self-Healing} \\
+\hline
+System A \cite{ref1} & No & Limited & No & No \\
+System B \cite{ref2} & Yes & No & Yes & Limited \\
+System C \cite{ref3} & Limited & Yes & No & No \\
+\textbf{Lesaka AI} & \textbf{Yes} & \textbf{Yes} & \textbf{Yes} & \textbf{Yes} \\
+\hline
+\end{tabular}
+\caption{Comparison of Existing Livestock Management Systems}
+\end{table}
+
+\section{Research Gaps}
+
+Based on the literature review, the following research gaps have been identified:
+
+\begin{enumerate}
+    \item Limited integration of 3NF database validation with intelligent agent systems
+    \item Insufficient focus on privacy-by-design in agricultural IoT systems
+    \item Lack of self-healing capabilities in rural network-constrained environments
+    \item Minimal emphasis on Botswana-specific agricultural contexts
+\end{enumerate}
+
+\section{Conclusion}
+
+The literature review reveals that while individual components of the proposed system have been explored in isolation, there is a lack of integrated solutions that combine robust data governance, intelligent agent orchestration, and self-healing capabilities specifically designed for Botswana's agricultural sector. The Lesaka AI project addresses these gaps through its comprehensive approach.
+
+% Add references here - this is a placeholder
+\bibliographystyle{apalike}
+\bibliography{references}

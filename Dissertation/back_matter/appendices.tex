@@ -1,0 +1,192 @@
+% Appendices
+
+\chapter*{Appendices}
+\addcontentsline{toc}{chapter}{Appendices}
+
+\section*{Appendix A: System Architecture Diagram}
+
+[Insert system architecture diagram here]
+
+\section*{Appendix B: Database Schema}
+
+[Insert complete database schema diagram here]
+
+\section*{Appendix C: API Documentation}
+
+\subsection*{API Endpoints}
+
+\subsubsection*{POST /api/register\_farmer}
+
+Registers a new farmer in the system.
+
+\textbf{Request Body:}
+\begin{verbatim}
+{
+  "full_name": "John Doe",
+  "district": "Serowe"
+}
+\end{verbatim}
+
+\textbf{Response:}
+\begin{verbatim}
+{
+  "status": "success",
+  "owner_id": "OWN-ABC12345"
+}
+\end{verbatim}
+
+\subsubsection*{POST /api/ingest\_telemetry}
+
+Ingests telemetry data from sensors.
+
+\textbf{Request Body:}
+\begin{verbatim}
+{
+  "cattle_id": "BOT-001",
+  "temperature": 38.5,
+  "heart_rate": 72
+}
+\end{verbatim}
+
+\textbf{Response:}
+\begin{verbatim}
+{
+  "status": "success",
+  "validation": "valid",
+  "orchestrator_result": "[Thekiso Agent] READY: BOT-001 qualifies for market liquidation"
+}
+\end{verbatim}
+
+\section*{Appendix D: Test Cases}
+
+\subsection*{Unit Test Cases}
+
+\subsubsection*{Temperature Validation}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Test ID} & \textbf{Input} & \textbf{Expected} & \textbf{Actual} \\
+\hline
+TC-001 & 38.5°C & Valid & Valid \\
+TC-002 & 28.0°C & Invalid & Invalid \\
+TC-003 & 47.5°C & Invalid & Invalid \\
+TC-004 & 30.0°C & Valid & Valid \\
+TC-005 & 45.0°C & Valid & Valid \\
+\hline
+\end{tabular}
+\caption{Temperature Validation Test Cases}
+\end{table}
+
+\section*{Appendix E: Code Samples}
+
+\subsection*{Validation Engine Code}
+
+\begin{lstlisting}[language=Python, caption=Temperature Validation]
+def validate_temperature(self, temp):
+    """Validate temperature is within physiological bounds"""
+    # Added extra check because sensor was sending -0.1 sometimes
+    if temp < self.MIN_TEMP or temp > self.MAX_TEMP:
+        return False, f"Temperature {temp}C outside valid range ({self.MIN_TEMP}-{self.MAX_TEMP}C)"
+    return True, "Valid"
+\end{lstlisting}
+
+\subsection*{Graph Orchestrator Code}
+
+\begin{lstlisting}[language=Python, caption=Self-Healing Implementation]
+def route_telemetry(self, cattle_id):
+    try:
+        # Fetch verified data from our INFS-validated database
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        cursor.execute("SELECT temperature FROM telemetry_logs 
+                        WHERE cattle_id = ? ORDER BY log_id DESC LIMIT 1", 
+                        (cattle_id,))
+        row = cursor.fetchone()
+        conn.close()
+
+        if not row:
+            # COMP: Self-healing fallback to neutral supervisor node
+            return self.agent_supervisor(cattle_id, "NO_DATA_FOUND")
+        
+        # ... rest of implementation
+    except Exception as e:
+        # COMP: Self-healing - catch exception and route to supervisor
+        print(f"[COMP] Exception caught: {e}, routing to supervisor")
+        return self.agent_supervisor(cattle_id, f"PROCESSING_ERROR: {str(e)}")
+\end{lstlisting}
+
+\section*{Appendix F: User Manual}
+
+\subsection*{Getting Started}
+
+1. Install Python 3.10 or higher
+2. Install required dependencies: \texttt{pip install -r requirements.txt}
+3. Initialize database: \texttt{python init\_db.py}
+4. Start the application: \texttt{python app.py}
+5. Access the web interface at \texttt{http://localhost:5000}
+
+\subsection*{Registering as a Farmer}
+
+1. Navigate to the registration page
+2. Enter your full name and district
+3. Submit the registration form
+4. Note your generated owner ID for future reference
+
+\subsection*{Registering Cattle}
+
+1. Log in with your credentials
+2. Navigate to the Cattle Management section
+3. Click "Register New Cattle"
+4. Enter cattle details (ID, breed, birth date, gender)
+5. Submit the form
+
+\subsection*{Viewing Telemetry Data}
+
+1. Navigate to the Dashboard
+2. Select a cattle from your list
+3. View current health status and telemetry history
+4. Review agent recommendations
+
+\section*{Appendix G: Installation Guide}
+
+\subsection*{System Requirements}
+
+\begin{itemize}
+    \item Operating System: Windows 10/11, Linux, or macOS
+    \item Python: 3.10 or higher
+    \item RAM: 4GB minimum (8GB recommended)
+    \item Disk Space: 500MB minimum
+    \item Internet: Required for initial setup and API calls
+\end{itemize}
+
+\subsection*{Installation Steps}
+
+\begin{enumerate}
+    \item Clone the repository: \texttt{git clone https://github.com/PipsWhisperer/LesakaAi\_project.git}
+    \item Navigate to project directory: \texttt{cd LesakaAi\_project}
+    \item Create virtual environment: \texttt{python -m venv venv}
+    \item Activate virtual environment:
+    \begin{itemize}
+        \item Windows: \texttt{venv\textbackslash Scripts\textbackslash activate}
+        \item Linux/macOS: \texttt{source venv/bin/activate}
+    \end{itemize}
+    \item Install dependencies: \texttt{pip install -r requirements.txt}
+    \item Initialize database: \texttt{python init\_db.py}
+    \item Start application: \texttt{python app.py}
+\end{enumerate}
+
+\section*{Appendix H: Glossary}
+
+\begin{description}
+    \item[3NF] Third Normal Form - A database design principle that eliminates redundancy
+    \item[API] Application Programming Interface - Set of protocols for building software
+    \item[DCG] Directed Cyclic Graph - A graph with directed edges that may contain cycles
+    \item[INFS] Information Systems - Academic module focusing on data governance
+    \item[IoT] Internet of Things - Network of interconnected physical devices
+    \item[RBAC] Role-Based Access Control - Method of regulating access to computer resources
+    \item[COMP] Computer Science - Academic module focusing on algorithms and systems
+    \item[REST] Representational State Transfer - Architectural style for web services
+    \item[SQLite] Relational database management system contained in a C library
+\end{description}

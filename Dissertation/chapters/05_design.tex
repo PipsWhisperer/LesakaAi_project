@@ -1,0 +1,260 @@
+% Chapter 5: Design
+
+\section{Introduction}
+
+This chapter presents the detailed design of the Lesaka AI system, including system architecture, database design, API design, and security considerations. The design phase translates the requirements identified in the analysis phase into concrete technical specifications.
+
+\section{System Architecture}
+
+\subsection{High-Level Architecture}
+
+The Lesaka AI system follows a three-tier architecture:
+
+\begin{enumerate}
+    \item \textbf{Presentation Layer:} React-based web frontend
+    \item \textbf{Application Layer:} Flask web server with business logic
+    \item \textbf{Data Layer:} SQLite database with 3NF schema
+\end{enumerate}
+
+\subsection{Component Architecture}
+
+The system is composed of the following key components:
+
+\begin{itemize}
+    \item \textbf{Validation Engine:} Ensures 3NF compliance and data integrity
+    \item \textbf{Graph Orchestrator:} Manages multi-agent routing
+    \item \textbf{RBAC Module:} Enforces role-based access control
+    \item \textbf{API Gateway:} Handles HTTP requests and responses
+    \item \textbf{Frontend Components:} React components for UI
+\end{itemize}
+
+\section{Database Design}
+
+\subsection{Schema Overview}
+
+The database follows Third Normal Form (3NF) principles to eliminate redundancy and ensure data integrity. The schema consists of the following tables:
+
+\subsection{Table: Farmers}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Column} & \textbf{Type} & \textbf{Constraints} & \textbf{Description} \\
+\hline
+farmer\_id & INTEGER & PRIMARY KEY AUTOINCREMENT & Unique identifier \\
+owner\_id & TEXT & UNIQUE NOT NULL & Anonymized token \\
+full\_name & TEXT & NOT NULL & Farmer's full name \\
+district & TEXT & NOT NULL & Operational district \\
+registration\_date & TEXT & NOT NULL & Registration timestamp \\
+\hline
+\end{tabular}
+\caption{Farmers Table Schema}
+\end{table}
+
+\subsection{Table: Cattle}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Column} & \textbf{Type} & \textbf{Constraints} & \textbf{Description} \\
+\hline
+cattle\_id & TEXT & PRIMARY KEY & Unique cattle identifier \\
+owner\_id & TEXT & NOT NULL, FK & Reference to farmers \\
+breed & TEXT & NOT NULL & Cattle breed \\
+birth\_date & TEXT & NOT NULL & Date of birth \\
+gender & TEXT & NOT NULL & Male/Female \\
+\hline
+\end{tabular}
+\caption{Cattle Table Schema}
+\end{table}
+
+\subsection{Table: Telemetry Logs}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Column} & \textbf{Type} & \textbf{Constraints} & \textbf{Description} \\
+\hline
+log\_id & INTEGER & PRIMARY KEY AUTOINCREMENT & Log identifier \\
+cattle\_id & TEXT & NOT NULL, FK & Reference to cattle \\
+temperature & REAL & NOT NULL & Temperature reading \\
+heart\_rate & INTEGER & NULL & Heart rate reading \\
+timestamp & TEXT & NOT NULL & Reading timestamp \\
+validation\_status & TEXT & NOT NULL & VALID/REJECTED \\
+\hline
+\end{tabular}
+\caption{Telemetry Logs Table Schema}
+\end{table}
+
+\subsection{3NF Compliance}
+
+The schema achieves Third Normal Form by:
+
+\begin{itemize}
+    \item Eliminating repeating groups (1NF)
+    \item Removing partial dependencies (2NF)
+    \item Eliminating transitive dependencies (3NF)
+\end{itemize}
+
+\section{API Design}
+
+\subsection{RESTful Endpoints}
+
+The system exposes RESTful API endpoints for frontend integration:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Endpoint} & \textbf{Method} & \textbf{Auth} & \textbf{Description} \\
+\hline
+/ & GET & Public & Main dashboard \\
+/api/register\_farmer & POST & Public & Register new farmer \\
+/api/ingest\_telemetry & POST & Authenticated & Ingest sensor data \\
+/api/cattle\_list/<id> & GET & Authenticated & Get farmer's cattle \\
+/api/telemetry\_history/<id> & GET & Authenticated & Get telemetry history \\
+\hline
+\end{tabular}
+\caption{API Endpoints}
+\end{table}
+
+\subsection{Data Validation}
+
+API endpoints implement the following validation:
+
+\begin{itemize}
+    \item Temperature range validation (30.0-45.0°C)
+    \item District validation against allowed regions
+    \item Required field presence checking
+    \item Data type validation
+\end{itemize}
+
+\section{Multi-Agent System Design}
+
+\subsection{Agent Architecture}
+
+The multi-agent system consists of three specialized agents:
+
+\begin{enumerate}
+    \item \textbf{Agent Molemo:} Biomedical analysis for fever detection
+    \item \textbf{Agent Loapi:} Environmental analysis for stress factors
+    \item \textbf{Agent Thekiso:} Market assessment for optimal timing
+\end{enumerate}
+
+\subsection{Graph-Based Orchestration}
+
+Agents are coordinated through a Directed Cyclic Graph (DCG) that enables:
+
+\begin{itemize}
+    \item Dynamic routing based on contextual factors
+    \item Parallel agent execution where appropriate
+    \item Self-healing through fallback to supervisor node
+    \item State management across agent transitions
+\end{itemize}
+
+\subsection{Self-Healing Mechanism}
+
+The self-healing design includes:
+
+\begin{itemize}
+    \item Exception handling at each agent
+    \item Automatic routing to supervisor on failure
+    \item Context validation before agent execution
+    \item State cleanup on error conditions
+\end{itemize}
+
+\section{Security Design}
+
+\subsection{Authentication}
+
+Authentication is implemented through:
+
+\begin{itemize}
+    \item Session-based authentication
+    \item Token generation for API access
+    \item Session timeout mechanisms
+\end{itemize}
+
+\subsection{Authorization}
+
+RBAC implementation includes:
+
+\begin{itemize}
+    \item Role definition (admin, farmer, broker)
+    \item Permission assignment per role
+    \item Access control at API endpoint level
+    \item Data field-level restrictions (e.g., GPS coordinates)
+\end{itemize}
+
+\subsection{Privacy Protection}
+
+Privacy-by-design features:
+
+\begin{itemize}
+    \item Anonymized owner IDs
+    \item Separation of personal and telemetry data
+    \item Audit logging of data access
+    \item Secure data storage practices
+\end{itemize}
+
+\section{Frontend Design}
+
+\subsection{Component Architecture}
+
+The React frontend follows a component-based architecture:
+
+\begin{itemize}
+    \item \textbf{Header:} User information and navigation
+    \item \textbf{Dashboard:} Overview and metrics
+    \item \textbf{Cattle List:} Searchable cattle inventory
+    \item \textbf{Billing:} Subscription management
+    \item \textbf{Live Map:} Geographic visualization
+\end{itemize}
+
+\subsection{State Management}
+
+State is managed through:
+
+\begin{itemize}
+    \item React useState for local component state
+    \item API calls for data fetching
+    \item Context for global state (if needed)
+\end{itemize}
+
+\subsection{Responsive Design}
+
+The interface is designed for:
+
+\begin{itemize}
+    \item Desktop displays (primary)
+    \item Tablet devices (secondary)
+    \item Mobile devices (tertiary)
+\end{itemize}
+
+\section{Deployment Design}
+
+\subsection{Development Environment}
+
+\begin{itemize}
+    \item Local development with virtual environment
+    \item SQLite database for testing
+    \item React development server for frontend
+\end{itemize}
+
+\subsection{Production Considerations}
+
+Future production deployment would include:
+
+\begin{itemize}
+    \item PostgreSQL for database
+    \item Nginx as reverse proxy
+    \item Docker containerization
+    \item Cloud hosting (AWS/Azure/GCP)
+\end{itemize}
+
+\section{Conclusion}
+
+The design phase has established a comprehensive technical blueprint for the Lesaka AI system. The design addresses the requirements identified in the analysis phase while incorporating best practices for database normalization, multi-agent systems, security, and user experience. The design is ready for implementation in the next phase.

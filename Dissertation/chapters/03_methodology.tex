@@ -1,0 +1,149 @@
+% Chapter 3: Methodology
+
+\section{Introduction}
+
+This chapter describes the research methodology adopted for the Lesaka AI project. The methodology encompasses the research design, development approach, data collection methods, and evaluation strategies employed to achieve the project objectives.
+
+\section{Research Design}
+
+The project follows a design science research methodology \cite{hevner2004design}, which focuses on creating and evaluating IT artifacts intended to solve identified problems. The research design consists of the following phases:
+
+\begin{enumerate}
+    \item Problem identification and motivation
+    \item Objectives definition
+    \item Design and development
+    \item Demonstration
+    \item Evaluation
+\end{enumerate}
+
+\section{Development Approach}
+
+\subsection{Agile Development}
+
+The project employs an agile development methodology with iterative sprints. This approach allows for:
+
+\begin{itemize}
+    \item Continuous integration of feedback
+    \item Flexibility in responding to changing requirements
+    \item Early detection of issues
+    \item Regular progress demonstration
+\end{itemize}
+
+\subsection{Version Control}
+
+Git is used for version control with the following branching strategy:
+
+\begin{itemize}
+    \item \texttt{main} branch for stable releases
+    \item \texttt{develop} branch for integration
+    \item Feature branches for new functionality
+\end{itemize}
+
+\section{Data Collection}
+
+\subsection{Requirements Gathering}
+
+Requirements were gathered through:
+
+\begin{itemize}
+    \item Literature review of existing systems
+    \item Analysis of agricultural sector needs in Botswana
+    \item Consultation with domain experts
+    \item Review of module requirements (INFS 401/402, COMP 401/402)
+\end{itemize}
+
+\subsection{Test Data Generation}
+
+Synthetic test data was generated to simulate:
+
+\begin{itemize}
+    \item Farmer registration data
+    \item Cattle telemetry readings
+    \item Environmental sensor data
+    \item User role scenarios
+\end{itemize}
+
+\section{System Development}
+
+\subsection{Backend Development}
+
+The backend was developed using Python with the following approach:
+
+\begin{enumerate}
+    \item Database schema design (3NF compliance)
+    \item Validation engine implementation
+    \item Graph orchestrator development
+    \item API endpoint creation
+    \item Integration testing
+\end{enumerate}
+
+\subsection{Frontend Development}
+
+The React frontend was developed through:
+
+\begin{enumerate}
+    \item Component design based on Figma mockups
+    \item State management implementation
+    \item API integration
+    \item UI/UX refinement
+    \item Responsive design testing
+\end{enumerate}
+
+\section{Evaluation Methods}
+
+\subsection{Functional Testing}
+
+Functional testing verifies that each component performs its intended function:
+
+\begin{itemize}
+    \item Unit testing of individual modules
+    \item Integration testing of component interactions
+    \item System testing of end-to-end functionality
+\end{itemize}
+
+\subsection{Performance Testing}
+
+Performance testing evaluates system responsiveness under various loads:
+
+\begin{itemize}
+    \item Response time measurement
+    \item Throughput analysis
+    \item Resource utilization monitoring
+\end{itemize}
+
+\subsection{Validation Testing}
+
+Validation testing ensures the system meets module requirements:
+
+\begin{itemize}
+    \item INFS 401: 3NF validation verification
+    \item INFS 402: RBAC implementation testing
+    \item COMP 401: Agent orchestration evaluation
+    \item COMP 402: Self-healing mechanism testing
+\end{itemize}
+
+\section{Ethical Considerations}
+
+The project addresses ethical considerations through:
+
+\begin{itemize}
+    \item Privacy-by-design implementation
+    \item Anonymization of farmer identities
+    \item Secure data storage practices
+    \item Transparent data usage policies
+\end{itemize}
+
+\section{Limitations of Methodology}
+
+The methodology has the following limitations:
+
+\begin{itemize}
+    \item Limited access to real-world deployment environments
+    \item Synthetic test data may not reflect all real-world scenarios
+    \item Time constraints may limit comprehensive testing
+    \item Single-developer context may affect code review depth
+\end{itemize}
+
+\section{Conclusion}
+
+The methodology adopted provides a structured approach to developing the Lesaka AI system while ensuring alignment with academic requirements and practical constraints. The design science research approach, combined with agile development practices, enables iterative improvement and continuous validation of the system.

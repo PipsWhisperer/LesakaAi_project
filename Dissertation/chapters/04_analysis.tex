@@ -1,0 +1,191 @@
+% Chapter 4: Analysis
+
+\section{Introduction}
+
+This chapter presents the analysis phase of the Lesaka AI project, including functional and non-functional requirements, use cases, and system constraints. The analysis establishes the foundation for system design and implementation.
+
+\section{Functional Requirements}
+
+\subsection{User Management}
+
+\begin{itemize}
+    \item \textbf{FR-001:} The system shall allow farmers to register with their personal details
+    \item \textbf{FR-002:} The system shall generate anonymized owner IDs for privacy protection
+    \item \textbf{FR-003:} The system shall support multiple user roles (admin, farmer, broker)
+    \item \textbf{FR-004:} The system shall implement role-based access control
+\end{itemize}
+
+\subsection{Cattle Management}
+
+\begin{itemize}
+    \item \textbf{FR-005:} The system shall allow registration of cattle with unique identifiers
+    \item \textbf{FR-006:} The system shall store cattle breed, age, and health information
+    \item \textbf{FR-007:} The system shall allow farmers to view their registered cattle
+    \item \textbf{FR-008:} The system shall support cattle search and filtering
+\end{itemize}
+
+\subsection{Telemetry Management}
+
+\begin{itemize}
+    \item \textbf{FR-009:} The system shall accept telemetry data from sensors
+    \item \textbf{FR-010:} The system shall validate temperature readings (30.0-45.0°C)
+    \item \textbf{FR-011:} The system shall store validated telemetry data
+    \item \textbf{FR-012:} The system shall provide telemetry history for individual cattle
+\end{itemize}
+
+\subsection{Agent Orchestration}
+
+\begin{itemize}
+    \item \textbf{FR-013:} The system shall route telemetry to appropriate agents
+    \item \textbf{FR-014:} The system shall implement Agent Molemo for fever detection
+    \item \textbf{FR-015:} The system shall implement Agent Loapi for environmental analysis
+    \item \textbf{FR-016:} The system shall implement Agent Thekiso for market assessment
+\end{itemize}
+
+\section{Non-Functional Requirements}
+
+\subsection{Performance}
+
+\begin{itemize}
+    \item \textbf{NFR-001:} The system shall respond to API requests within 200ms (p95)
+    \item \textbf{NFR-002:} The system shall support 1000 concurrent users
+    \item \textbf{NFR-003:} The database shall handle 10,000 telemetry records per day
+\end{itemize}
+
+\subsection{Security}
+
+\begin{itemize}
+    \item \textbf{NFR-004:} The system shall encrypt sensitive data at rest
+    \item \textbf{NFR-005:} The system shall implement secure authentication
+    \item \textbf{NFR-006:} The system shall log all data access attempts
+\end{itemize}
+
+\subsection{Reliability}
+
+\begin{itemize}
+    \item \textbf{NFR-007:} The system shall have 99.9\% uptime during testing
+    \item \textbf{NFR-008:} The system shall implement self-healing mechanisms
+    \item \textbf{NFR-009:} The system shall recover from failures within 30 seconds
+\end{itemize}
+
+\subsection{Usability}
+
+\begin{itemize}
+    \item \textbf{NFR-010:} The system shall provide an intuitive web interface
+    \item \textbf{NFR-011:} The system shall be accessible on mobile devices
+    \item \textbf{NFR-012:} The system shall provide clear error messages
+\end{itemize}
+
+\section{Business Rules}
+
+\begin{itemize}
+    \item \textbf{BR-001:} Only registered farmers can register cattle
+    \item \textbf{BR-002:} Temperature readings outside 30.0-45.0°C shall be rejected
+    \item \textbf{BR-003:} Broker users cannot access GPS coordinates
+    \item \textbf{BR-004:} District must be one of: Orapa, Serowe, Maun, Ghanzi, Francistown, Gaborone, Lobatse
+    \item \textbf{BR-005:} Each cattle ID must be unique across the system
+\end{itemize}
+
+\section{Assumptions}
+
+\begin{itemize}
+    \item Users have basic computer literacy
+    \item Internet connectivity is available (though may be intermittent)
+    \item Sensor devices provide data in the expected format
+    \item Farmers will register with accurate information
+\end{itemize}
+
+\section{Constraints}
+
+\subsection{Technical Constraints}
+
+\begin{itemize}
+    \item System must run on standard hardware (no specialized equipment)
+    \item Database must be SQLite for edge deployment
+    \item Frontend must be React-based
+    \item Backend must be Python-based
+\end{itemize}
+
+\subsection{Time Constraints}
+
+\begin{itemize}
+    \item Development must be completed within academic semester timeline
+    \item Testing must be completed before submission deadline
+    \item Documentation must be finalized before final submission
+\end{itemize}
+
+\subsection{Resource Constraints}
+
+\begin{itemize}
+    \item Single developer context
+    \item Limited access to real-world testing environments
+    \item Budget constraints for external services
+\end{itemize}
+
+\section{Use Cases}
+
+\subsection{Use Case 1: Farmer Registration}
+
+\begin{itemize}
+    \item \textbf{Actor:} Farmer
+    \item \textbf{Precondition:} User is not registered
+    \item \textbf{Main Flow:}
+    \begin{enumerate}
+        \item User navigates to registration page
+        \item User enters personal details and district
+        \item System validates district
+        \item System generates anonymized owner ID
+        \item System stores farmer information
+        \item System confirms successful registration
+    \end{enumerate}
+    \item \textbf{Postcondition:} User is registered with owner ID
+\end{itemize}
+
+\subsection{Use Case 2: Telemetry Ingestion}
+
+\begin{itemize}
+    \item \textbf{Actor:} Sensor System
+    \item \textbf{Precondition:} Cattle is registered
+    \item \textbf{Main Flow:}
+    \begin{enumerate}
+        \item Sensor transmits telemetry data
+        \item System receives data
+        \item System validates temperature range
+        \item System stores valid data
+        \item System routes to appropriate agent
+        \item System returns processing result
+    \end{enumerate}
+    \item \textbf{Postcondition:} Telemetry is stored and processed
+\end{itemize}
+
+\subsection{Use Case 3: Cattle Health Monitoring}
+
+\begin{itemize}
+    \item \textbf{Actor:} Farmer
+    \item \textbf{Precondition:} User is logged in
+    \item \textbf{Main Flow:}
+    \begin{enumerate}
+        \item User views cattle list
+        \item User selects specific cattle
+        \item System displays health status
+        \item System shows telemetry history
+        \item System provides agent recommendations
+    \end{enumerate}
+    \item \textbf{Postcondition:} User has current health information
+\end{itemize}
+
+\section{Context Diagram}
+
+The system context identifies external entities and their interactions with the Lesaka AI system:
+
+\begin{itemize}
+    \item \textbf{Farmers:} Register cattle, view health status, receive alerts
+    \item \textbf{Veterinarians:} Access health data, provide diagnoses
+    \item \textbf{Brokers:} View market information (restricted access)
+    \item \textbf{Sensors:} Transmit telemetry data
+    \item \textbf{Administrators:} Manage system configuration and users
+\end{itemize}
+
+\section{Conclusion}
+
+The analysis phase has established clear functional and non-functional requirements, business rules, and use cases for the Lesaka AI system. These requirements align with the module specifications for INFS 401/402 and COMP 401/402, ensuring the system meets academic assessment criteria while addressing real-world agricultural needs in Botswana.

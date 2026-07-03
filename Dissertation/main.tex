@@ -1,0 +1,148 @@
+% Lesaka AI: Autonomous Telemetry & Governance Framework
+% Final Year Project Dissertation
+% Botswana International University of Science and Technology (BIUST)
+% Author: Andries Mooketsi Moiteelasilo
+% Year: 2026
+
+\documentclass[12pt,a4paper]{report}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{float}
+
+% Page Geometry
+\geometry{
+    a4paper,
+    left=40mm,
+    right=25mm,
+    top=25mm,
+    bottom=25mm
+}
+
+% Line Spacing
+\onehalfspacing
+
+% Hyperlink Setup
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cyan,
+    pdftitle={Lesaka AI Dissertation},
+    pdfauthor={Andries Mooketsi Moiteelasilo},
+    pdfsubject={Final Year Project},
+    pdfkeywords={IoT, Agriculture, Multi-Agent Systems, Data Governance}
+}
+
+% Code Listing Style
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+% Header and Footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\leftmark}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{Lesaka AI - Final Year Project}
+
+% Chapter Formatting
+\titleformat{\chapter}[display]
+    {\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+
+% Document Information
+\title{Lesaka AI: Autonomous Telemetry \& Governance Framework}
+\author{Andries Mooketsi Moiteelasilo}
+\date{2026}
+\institution{Botswana International University of Science and Technology (BIUST)}
+
+\begin{document}
+
+% Front Matter
+\input{front_matter/title_page}
+\input{front_matter/declaration}
+\input{front_matter/abstract}
+\input{front_matter/acknowledgements}
+
+% Table of Contents
+\tableofcontents
+\listoffigures
+\listoftables
+\lstlistoflistings
+
+% Main Chapters
+\chapter{Introduction}
+\input{chapters/01_introduction}
+
+\chapter{Literature Review}
+\input{chapters/02_literature_review}
+
+\chapter{Methodology}
+\input{chapters/03_methodology}
+
+\chapter{Analysis}
+\input{chapters/04_analysis}
+
+\chapter{Design}
+\input{chapters/05_design}
+
+\chapter{Implementation}
+\input{chapters/06_implementation}
+
+\chapter{Testing}
+\input{chapters/07_testing}
+
+\chapter{Results}
+\input{chapters/08_results}
+
+\chapter{Discussion}
+\input{chapters/09_discussion}
+
+\chapter{Conclusion}
+\input{chapters/10_conclusion}
+
+% Back Matter
+\input{back_matter/references}
+\input{back_matter/appendices}
+
+\end{document}
