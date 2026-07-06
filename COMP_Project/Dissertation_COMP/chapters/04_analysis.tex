@@ -1,0 +1,210 @@
+% Chapter 4: Analysis
+
+\section{Introduction}
+
+This chapter presents the analysis phase of the Lesaka Multi-Agent Orchestration System, including functional and non-functional requirements, use cases, and algorithmic analysis. The analysis establishes the foundation for system design and implementation.
+
+\section{Functional Requirements}
+
+\subsection{Graph Orchestration Requirements}
+
+\begin{itemize}
+    \item \textbf{GOR-001:} The system shall implement a graph-based routing algorithm for telemetry data
+    \item \textbf{GOR-002:} The system shall route data based on temperature thresholds
+    \item \textbf{GOR-003:} The system shall support state machine transitions
+    \item \textbf{GOR-004:} The system shall validate context before routing
+\end{itemize}
+
+\subsection{Agent Requirements}
+
+\begin{itemize}
+    \item \textbf{AR-001:} The system shall implement Agent Molemo for biomedical analysis
+    \item \textbf{AR-002:} The system shall implement Agent Loapi for environmental analysis
+    \item \textbf{AR-003:} The system shall implement Agent Thekiso for market assessment
+    \item \textbf{AR-004:} The system shall implement Supervisor agent for error recovery
+\end{itemize}
+
+\subsection{Self-Healing Requirements}
+
+\begin{itemize}
+    \item \textbf{SHR-001:} The system shall detect processing errors
+    \item \textbf{SHR-002:} The system shall route to supervisor on error
+    \item \textbf{SHR-003:} The system shall implement fallback strategies
+    \item \textbf{SHR-004:} The system shall log all errors for audit
+\end{itemize}
+
+\subsection{Integration Requirements}
+
+\begin{itemize}
+    \item \textbf{IR-001:} The system shall consume data from INFS database
+    \item \textbf{IR-002:} The system shall respect INFS RBAC permissions
+    \item \textbf{IR-003:} The system shall handle INFS validation status
+    \item \textbf{IR-004:} The system shall provide standardized error responses
+\end{itemize}
+
+\section{Non-Functional Requirements}
+
+\subsection{Performance Requirements}
+
+\begin{itemize}
+    \item \textbf{NFR-001:} Routing decisions shall complete within 100ms (p95)
+    \item \textbf{NFR-002:} Agent processing shall complete within 50ms per request
+    \item \textbf{NFR-003:} The system shall support 1000 routing requests per minute
+\end{itemize}
+
+\subsection{Algorithmic Requirements}
+
+\begin{itemize}
+    \item \textbf{NFR-004:} Routing algorithm shall have O(n) or better complexity
+    \item \textbf{NFR-005:} State machine shall have O(1) transition complexity
+    \item \textbf{NFR-006:} Agent selection shall be deterministic
+\end{itemize}
+
+\subsection{Reliability Requirements}
+
+\begin{itemize}
+    \item \textbf{NFR-007:} The system shall maintain 99.9\% routing accuracy
+    \item \textbf{NFR-008:} The system shall recover from errors within 5 seconds
+\end{itemize}
+
+\subsection{Usability Requirements}
+
+\begin{itemize}
+    \item \textbf{NFR-009:} The system shall provide clear routing decisions
+    \item \textbf{NFR-010:} The system shall document all algorithmic decisions
+\end{itemize}
+
+\section{Business Rules}
+
+\begin{itemize}
+    \item \textbf{BR-001:} Temperature >39.5°C routes to Molemo (fever detection)
+    \item \textbf{BR-002:} Temperature <36.0°C routes to Loapi (cold stress)
+    \item \textbf{BR-003:} Normal range (36.0-39.5°C) routes to Thekiso (market)
+    \item \textbf{BR-004:} Errors route to Supervisor (fallback)
+    \item \textbf{BR-005:} Missing data routes to Supervisor (no data found)
+\end{itemize}
+
+\section{Assumptions}
+
+\begin{itemize}
+    \item INFS database provides validated telemetry data
+    \item Temperature readings are accurate (validated by INFS)
+    \item Network connectivity is available (though may be intermittent)
+    \item Agent processing is deterministic
+\end{itemize}
+
+\section{Constraints}
+
+\subsection{Technical Constraints}
+
+\begin{itemize}
+    \item System must run on standard hardware (no specialized equipment)
+    \item Backend must be Python-based
+    \item Graph library must be NetworkX or equivalent
+\end{itemize}
+
+\subsection{Time Constraints}
+
+\begin{itemize}
+    \item Development must be completed within academic semester timeline
+    \item Testing must be completed before submission deadline
+    \item Documentation must be finalized before final submission
+\end{itemize}
+
+\subsection{Resource Constraints}
+
+\begin{itemize}
+    \item Single developer context
+    \item Limited access to real-world testing environments
+    \item Budget constraints for external services
+\end{itemize}
+
+\section{Use Cases}
+
+\subsection{Use Case 1: Fever Detection Routing}
+
+\begin{itemize}
+    \item \textbf{Actor:} Graph Orchestrator
+    \item \textbf{Precondition:} Telemetry data with high temperature
+    \item \textbf{Main Flow:}
+    \begin{enumerate}
+        \item System receives telemetry data from INFS database
+        \item System validates context
+        \item System checks temperature threshold
+        \item Temperature >39.5°C triggers fever routing
+        \item System routes to Agent Molemo
+        \item Agent Molemo processes and returns recommendation
+    \end{enumerate}
+    \item \textbf{Postcondition:} Fever alert generated
+\end{itemize}
+
+\subsection{Use Case 2: Error Recovery}
+
+\begin{itemize}
+    \item \textbf{Actor:} Graph Orchestrator
+    \item \textbf{Precondition:} Processing error occurs
+    \item \textbf{Main Flow:}
+    \begin{enumerate}
+        \item System detects processing error
+        \item System routes to Supervisor agent
+        \item Supervisor agent implements fallback strategy
+        \item System logs error for audit
+        \item System returns neutral response
+    \end{enumerate}
+    \item \textbf{Postcondition:} Error handled gracefully
+\end{itemize}
+
+\subsection{Use Case 3: Market Assessment}
+
+\begin{itemize}
+    \item \textbf{Actor:} Graph Orchestrator
+    \item \textbf{Precondition:} Telemetry data with normal temperature
+    \item \textbf{Main Flow:}
+    \begin{enumerate}
+        \item System receives telemetry data from INFS database
+        \item System validates context
+        \item System checks temperature threshold
+        \item Temperature in normal range triggers market routing
+        \item System routes to Agent Thekiso
+        \item Agent Thekiso processes and returns market assessment
+    \end{enumerate}
+    \item \textbf{Postcondition:} Market assessment generated
+\end{itemize}
+
+\section{Algorithmic Analysis}
+
+\subsection{Routing Algorithm Complexity}
+
+The routing algorithm has the following complexity characteristics:
+
+\begin{itemize}
+    \item \textbf{Time Complexity:} O(1) - Constant time for threshold comparison
+    \item \textbf{Space Complexity:} O(1) - Constant space for routing decision
+    \item \textbf{Determinism:} Deterministic routing based on temperature
+\end{itemize}
+
+\subsection{State Machine Complexity}
+
+The state machine has the following complexity characteristics:
+
+\begin{itemize}
+    \item \textbf{Time Complexity:} O(1) - Constant time for state transition
+    \item \textbf{Space Complexity:} O(1) - Constant space for state storage
+    \item \textbf{Determinism:} Deterministic transitions based on thresholds
+\end{itemize}
+
+\section{Context Diagram}
+
+The system context identifies external entities and their interactions with the Lesaka Multi-Agent Orchestration System:
+
+\begin{itemize}
+    \item \textbf{INFS Database:} Provides validated telemetry data
+    \item \textbf{Agent Molemo:} Biomedical analysis
+    \item \textbf{Agent Loapi:} Environmental analysis
+    \item \textbf{Agent Thekiso:} Market assessment
+    \item \textbf{Supervisor Agent:} Error recovery
+\end{itemize}
+
+\section{Conclusion}
+
+The analysis phase has established clear functional and non-functional requirements, business rules, and use cases for the Lesaka Multi-Agent Orchestration System. These requirements align with COMP 401 module requirements and address the practical needs of intelligent routing for agricultural IoT in Botswana.

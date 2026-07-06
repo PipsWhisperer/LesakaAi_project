@@ -1,0 +1,149 @@
+% Chapter 2: Literature Review
+
+\section{Introduction}
+
+This chapter reviews existing literature relevant to the Lesaka Data Governance Framework. The review focuses on four key areas: database normalization and design, data governance frameworks, privacy-by-design principles, and agricultural IoT systems. The review identifies gaps in current research and establishes the theoretical foundation for the project.
+
+\section{Database Normalization and Design}
+
+Database normalization is a fundamental concept in database design that aims to eliminate data redundancy and ensure data integrity. The concept was first introduced by Codd in 1970 and has since become a standard practice in database design \cite{codd1970relational}.
+
+\subsection{Third Normal Form (3NF)}
+
+Third Normal Form (3NF) is a database design principle that builds upon First Normal Form (1NF) and Second Normal Form (2NF). A relation is in 3NF if it is in 2NF and has no transitive dependencies \cite{date2003database}. 
+
+According to Date \cite{date2003database}, 3NF provides several benefits:
+- Elimination of data redundancy
+- Prevention of update anomalies
+- Improved data integrity
+- Simplified maintenance
+
+However, some researchers argue that strict adherence to 3NF can impact query performance in certain scenarios \cite{navathe2020database}. This trade-off between normalization and performance is particularly relevant for IoT systems where query speed is critical.
+
+\subsection{Database Design for IoT}
+
+Recent research has examined database design principles specifically for IoT applications. Li et al. \cite{li2018database} propose a hybrid approach that combines normalized tables for critical data with denormalized views for frequently accessed data. This approach aims to balance data integrity with performance requirements.
+
+In agricultural IoT contexts, database design must consider factors such as:
+- High-volume time-series data
+- Intermittent connectivity
+- Resource-constrained edge devices
+- Real-time query requirements
+
+\section{Data Governance Frameworks}
+
+Data governance refers to the overall management of data availability, usability, integrity, and security in enterprise systems \cite{damodaran2019data}. Effective data governance frameworks are essential for ensuring data quality and compliance with regulatory requirements.
+
+\subsection{Data Quality Management}
+
+Data quality is a critical concern in data governance. Wang and Strong \cite{wang1996beyond} identify four categories of data quality: intrinsic, contextual, representational, and accessibility. Their framework emphasizes that data quality is multidimensional and context-dependent.
+
+In agricultural IoT systems, data quality challenges include:
+- Sensor calibration drift
+- Environmental interference
+- Data transmission errors
+- Missing or incomplete data
+
+\subsection{Data Integrity Constraints}
+
+Data integrity constraints are mechanisms that ensure data accuracy and consistency. These include:
+- Entity integrity (ensuring unique identification)
+- Referential integrity (ensuring valid relationships)
+- Domain integrity (ensuring valid data values)
+- User-defined integrity (ensuring business rules)
+
+Research by Elmasri and Navathe \cite{navathe2020database} demonstrates that proper implementation of integrity constraints is essential for maintaining data quality in database systems.
+
+\section{Privacy-by-Design Principles}
+
+Privacy-by-design is an approach to systems engineering that embeds privacy protections into the design and architecture of IT systems \cite{cavoukian2011privacy}. The concept was developed by Ann Cavoukian and has been adopted as a regulatory principle in many jurisdictions.
+
+\subsection{Core Principles}
+
+Cavoukian \cite{cavoukian2011privacy} identifies seven foundational principles of privacy-by-design:
+1. Proactive not reactive
+2. Privacy as the default
+3. Privacy embedded into design
+4. Full functionality
+5. End-to-end security
+6. Visibility and transparency
+7. Respect for user privacy
+
+\subsection{Anonymization Techniques}
+
+Data anonymization is a key technique for implementing privacy-by-design. Sweeney \cite{sweeney2002k} demonstrated that simple anonymization techniques (e.g., removing names) are often insufficient for protecting privacy, as other attributes can be used to re-identify individuals.
+
+More sophisticated anonymization techniques include:
+- k-anonymity \cite{sweeney2002k}
+- l-diversity \cite{machanavajjhala2007diversity}
+- t-closeness \cite{li2007t}
+
+In agricultural contexts, anonymization of farmer data is particularly important for protecting commercial interests and personal privacy.
+
+\section{Agricultural IoT Systems}
+
+IoT technologies are increasingly being applied to agricultural applications, enabling precision farming and real-time monitoring. Wolfert et al. \cite{wolfert2017big} provide a comprehensive review of big data applications in smart farming.
+
+\subsection{Livestock Monitoring}
+
+Livestock monitoring is a key application of agricultural IoT. Riquelme et al. \cite{riquelme2018smonitor} describe an IoT system for monitoring cattle health using wireless sensor networks. Their system demonstrates the potential of IoT for early disease detection and improved herd management.
+
+However, many existing livestock monitoring systems focus primarily on data collection rather than data governance. Research by Bag et al. \cite{bag2019smart} highlights the lack of standardized data governance frameworks in agricultural IoT systems.
+
+\subsection{Challenges in Developing Regions}
+
+Implementing agricultural IoT systems in developing regions presents unique challenges. These include:
+- Limited internet connectivity
+- Resource constraints
+- Technical infrastructure limitations
+- User literacy and training needs
+
+Research by Dara et al. \cite{dara2018precision} emphasizes the need for context-aware solutions that consider the specific constraints of developing regions.
+
+\section{Research Gaps}
+
+Based on the literature review, several research gaps have been identified:
+
+\subsection{Gap 1: Data Governance in Agricultural IoT}
+
+While agricultural IoT systems have been extensively studied, there is limited research on data governance frameworks specifically designed for agricultural contexts. Most existing systems focus on data collection and analysis rather than data governance \cite{bag2019smart}.
+
+\subsection{Gap 2: 3NF in Edge Computing}
+
+There is limited research on the application of 3NF database design principles in edge computing environments for IoT. The trade-offs between normalization and performance in resource-constrained environments require further investigation \cite{li2018database}.
+
+\subsection{Gap 3: Privacy-by-Design in Agriculture}
+
+Privacy-by-design principles have been widely studied in healthcare and financial contexts, but their application to agricultural data is limited. The specific privacy concerns of farmers (e.g., commercial sensitivity, location privacy) require tailored approaches \cite{cavoukian2011privacy}.
+
+\subsection{Gap 4: Botswana Context}
+
+There is limited research on agricultural IoT systems specifically designed for Botswana's context, including consideration of local infrastructure, regulatory environment, and cultural factors \cite{botswana_agriculture_2023}.
+
+\section{Comparison of Existing Systems}
+
+Table \ref{tab:comparison} compares existing agricultural IoT systems in terms of data governance features.
+
+\begin{table}[H]
+\centering
+\caption{Comparison of Agricultural IoT Systems}
+\label{tab:comparison}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{System} & \textbf{3NF DB} & \textbf{RBAC} & \textbf{Privacy} & \textbf{Audit} \\
+\hline
+Riquelme et al. \cite{riquelme2018smonitor} & No & No & No & No \\
+Bag et al. \cite{bag2019smart} & Partial & No & No & Yes \\
+Dara et al. \cite{dara2018precision} & No & Yes & No & Yes \\
+\textbf{Lesaka AI (Proposed)} & \textbf{Yes} & \textbf{Yes} & \textbf{Yes} & \textbf{Yes} \\
+\hline
+\end{tabular}
+\end{table}
+
+The comparison demonstrates that existing systems lack comprehensive data governance features. The Lesaka AI framework aims to address these gaps by implementing 3NF database design, RBAC, privacy-by-design, and audit logging.
+
+\section{Conclusion}
+
+The literature review has established the theoretical foundation for the Lesaka Data Governance Framework. The review has identified key concepts in database normalization, data governance, privacy-by-design, and agricultural IoT. The research gaps identified provide justification for the project's focus on comprehensive data governance for agricultural IoT in Botswana's context.
+
+The next chapter will describe the methodology used to design and implement the Lesaka Data Governance Framework.

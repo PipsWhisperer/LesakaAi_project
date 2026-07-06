@@ -1,0 +1,192 @@
+% Chapter 3: Methodology
+
+\section{Introduction}
+
+This chapter describes the research methodology adopted for the Lesaka Data Governance Framework. The methodology encompasses the research design, development approach, data collection methods, and evaluation strategies employed to achieve the project objectives.
+
+\section{Research Design}
+
+The project follows a design science research methodology \cite{hevner2004design}, which focuses on creating and evaluating IT artifacts intended to solve identified problems. Design science research is particularly appropriate for this project as it emphasizes the creation of practical artifacts (database schema, validation engine, RBAC system) while contributing to theoretical knowledge.
+
+The research design consists of the following phases:
+
+\begin{enumerate}
+    \item Problem identification and motivation
+    \item Objectives definition
+    \item Design and development
+    \item Demonstration
+    \item Evaluation
+\end{enumerate}
+
+\section{Development Approach}
+
+\subsection{Agile Development}
+
+The project employs an agile development methodology with iterative sprints. This approach allows for:
+
+\begin{itemize}
+    \item Continuous integration of feedback
+    \item Flexibility in responding to changing requirements
+    \item Early detection of issues
+    \item Regular progress demonstration
+\end{itemize}
+
+The development process is organized into two-week sprints, with each sprint focusing on specific components:
+- Sprint 1: Database schema design and normalization
+- Sprint 2: Data validation engine implementation
+- Sprint 3: RBAC system implementation
+- Sprint 4: Integration and testing
+- Sprint 5: Documentation and refinement
+
+\subsection{Version Control}
+
+Git is used for version control with the following branching strategy:
+
+\begin{itemize}
+    \item \texttt{main} branch for stable releases
+    \item \texttt{develop} branch for integration
+    \item Feature branches for new functionality
+\end{objectize}
+
+This branching strategy ensures that the main branch always contains stable, tested code while allowing for experimental development in feature branches.
+
+\section{Data Collection}
+
+\subsection{Requirements Gathering}
+
+Requirements were gathered through:
+
+\begin{itemize}
+    \item Literature review of existing systems
+    \item Analysis of agricultural sector needs in Botswana
+    \item Review of INFS 401 module requirements
+    \item Consultation with domain experts
+\end{itemize}
+
+The requirements gathering process focused on identifying data governance requirements specific to agricultural IoT contexts in developing regions.
+
+\subsection{Test Data Generation}
+
+Synthetic test data was generated to simulate:
+
+\begin{itemize}
+    \item Farmer registration data
+    \item Cattle registration data
+    \item Telemetry readings (temperature, heart rate)
+    \item User role scenarios (admin, farmer, broker)
+\end{itemize}
+
+The test data generation process included:
+- Valid data within expected ranges
+- Invalid data to test validation rules
+- Edge cases to test boundary conditions
+- Anomalous data to test anomaly detection
+
+\section{System Development}
+
+\subsection{Database Development}
+
+The database was developed through the following steps:
+
+\begin{enumerate}
+    \item Schema design based on 3NF principles
+    \item Normalization proofs to ensure compliance
+    \item Implementation in SQLite
+    \item Index optimization for performance
+    \item Integrity constraint implementation
+\end{enumerate}
+
+The development process included iterative refinement based on testing results and performance analysis.
+
+\subsection{Validation Engine Development}
+
+The validation engine was developed through:
+
+\begin{enumerate}
+    \item Requirement analysis for validation rules
+    \item Design of validation logic
+    \item Implementation using Python
+    \item Integration with database
+    \item Testing with synthetic data
+\end{enumerate}
+
+The validation engine includes student-like comments and temporary fixes to reflect authentic development practices.
+
+\subsection{RBAC System Development}
+
+The RBAC system was developed through:
+
+\begin{enumerate}
+    \item Role definition based on user types
+    \item Permission matrix design
+    \item Implementation of permission checking logic
+    \item Integration with validation engine
+    \item Testing of permission enforcement
+\end{enumerate}
+
+The RBAC implementation includes privacy-by-design features such as anonymized farmer IDs and GPS coordinate restrictions for broker roles.
+
+\section{Evaluation Methods}
+
+\subsection{Functional Testing}
+
+Functional testing verifies that each component performs its intended function:
+
+\begin{itemize}
+    \item Database operations (CRUD)
+    \item Data validation rules
+    \item RBAC permission enforcement
+    \item Data integrity constraints
+\end{itemize}
+
+\subsection{Performance Testing}
+
+Performance testing evaluates system responsiveness under various loads:
+
+\begin{itemize}
+    \item Query response time measurement
+    \item Database operation throughput
+    \item Resource utilization monitoring
+    \item Index effectiveness analysis
+\end{itemize}
+
+\subsection{Validation Testing}
+
+Validation testing ensures the system meets INFS 401 requirements:
+
+\begin{itemize}
+    \item 3NF compliance verification
+    \item Data integrity constraint testing
+    \item Anomaly prevention testing
+    \item Privacy protection verification
+\end{itemize}
+
+\section{Ethical Considerations}
+
+The project addresses ethical considerations through:
+
+\begin{itemize}
+    \item Privacy-by-design implementation
+    \item Anonymization of farmer identities
+    \item Secure data storage practices
+    \item Transparent data usage policies
+\end{itemize}
+
+The project follows ethical guidelines for data collection and storage, ensuring that farmer data is protected and used responsibly.
+
+\section{Limitations of Methodology}
+
+The methodology has the following limitations:
+
+\begin{itemize}
+    \item Limited access to real-world deployment environments
+    \item Synthetic test data may not reflect all real-world scenarios
+    \item Time constraints may limit comprehensive testing
+    \item Single-developer context may affect code review depth
+\end{itemize}
+
+These limitations are acknowledged and addressed through careful design and testing strategies.
+
+\section{Conclusion}
+
+The methodology adopted provides a structured approach to developing the Lesaka Data Governance Framework while ensuring alignment with INFS 401 requirements. The design science research approach, combined with agile development practices, enables iterative improvement and continuous validation of the system.

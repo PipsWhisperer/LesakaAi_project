@@ -1,0 +1,249 @@
+% Chapter 5: Design
+
+\section{Introduction}
+
+This chapter presents the detailed design of the Lesaka Multi-Agent Orchestration System, including multi-agent architecture, graph orchestration design, agent design, state machine design, and self-healing mechanisms. The design phase translates the requirements identified in the analysis phase into concrete technical specifications.
+
+\section{Multi-Agent Architecture}
+
+\subsection{System Architecture Overview}
+
+The multi-agent system follows a hierarchical architecture with three layers:
+
+\begin{enumerate}
+    \item \textbf{Orchestration Layer:} Graph orchestrator manages routing decisions
+    \item \textbf{Agent Layer:} Specialized agents perform domain-specific analysis
+    \item \textbf{Data Layer:} INFS database provides validated telemetry data
+\end{enumerate}
+
+\subsection{Component Architecture}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Component} & \textbf{Responsibility} & \textbf{Interface} \\
+\hline
+Graph Orchestrator | Routing decisions & route\_telemetry() \\
+Agent Molemo | Biomedical analysis | process() \\
+Agent Loapi | Environmental analysis | process() |
+Agent Thekiso | Market assessment | process() \\
+Supervisor Agent | Error recovery | process() \\
+\hline
+\end{tabular}
+\caption{Component Architecture}
+\end{table}
+
+\section{Graph Orchestration Design}
+
+\subsection{Graph Structure}
+
+The orchestration graph is modeled as a Directed Cyclic Graph (DCG) with the following structure:
+
+\begin{itemize}
+    \item \textbf{Nodes:} Agents (Molemo, Loapi, Thekiso, Supervisor)
+    \item \textbf{Edges:} Routing paths based on temperature thresholds
+    \item \textbf{Weights:} Priority levels for routing decisions
+\end{itemize}
+
+\subsection{Routing Algorithm}
+
+The routing algorithm uses a state machine approach:
+
+\begin{algorithm}
+\caption{Telemetry Routing Algorithm}
+\begin{algorithmic}[1]
+\Require{telemetry\_data, cattle\_id}
+\Ensure{agent\_response}
+\State Fetch temperature from telemetry\_data
+\State Validate context for cattle\_id
+\If{context is invalid}
+    \State Return Supervisor response
+\EndIf
+\If{temperature > 39.5}
+    \State Route to Molemo (fever detection)
+\ElsIf{temperature < 36.0}
+    \State Route to Loapi (cold stress)
+\Else
+    \State Route to Thekiso (market assessment)
+\EndIf
+\State Return agent response
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Algorithm Complexity}
+
+\begin{itemize}
+    \item \textbf{Time Complexity:} O(1) - Constant time for threshold comparison
+    \item \textbf{Space Complexity:} O(1) - Constant space for routing decision
+    \item \textbf{Determinism:} Deterministic routing based on temperature
+\end{itemize}
+
+\section{Agent Design}
+
+\subsection{Agent Molemo Design}
+
+\textbf{Specialization:} Biomedical analysis for fever detection
+
+\textbf{Input:} Temperature, heart rate
+
+\textbf{Output:} Severity level, recommendation, action required
+
+\textbf{Thresholds:}
+- Critical: $\geq$ 41.0°C
+- High: $\geq$ 39.5°C
+- Normal: < 39.5°C
+
+\subsection{Agent Loapi Design}
+
+\textbf{Specialization:} Environmental analysis for cold stress
+
+\textbf{Input:} Temperature, humidity
+
+\textbf{Output:} Severity level, recommendation, action required
+
+\textbf{Thresholds:}
+- Severe: $\leq$ 34.0°C
+- Moderate: $\leq$ 36.0°C
+- Normal: > 36.0°C
+
+\subsection{Agent Thekiso Design}
+
+\textbf{Specialization:} Market assessment for liquidation timing
+
+\textbf{Input:} Temperature, heart rate
+
+\textbf{Output:} Market ready status, grade, estimated value
+
+\textbf{Grading:}
+- Grade A: Optimal health
+- Grade B: Market-ready with considerations
+- Grade C: Requires health assessment
+- Grade D: Not suitable for market
+
+\subsection{Supervisor Agent Design}
+
+\textbf{Specialization:} Error recovery and system stability
+
+\textbf{Input:} Cattle ID, error type, error message
+
+\textbf{Output:} Fallback action, recovery message
+
+\textbf{Fallback Strategies:}
+- No data found: Request data refresh
+- Context anomaly: Re-validate regional identifier
+- Processing error: Retry in safe mode
+- Unknown error: Escalate to manual review
+
+\section{State Machine Design}
+
+\subsection{State Definition}
+
+The state machine has the following states:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{State} & \textbf{Condition} & \textbf{Action} \\
+\hline
+Normal | 36.0°C $\leq$ temp $\leq$ 39.5°C | Route to Thekiso \\
+Fever | temp > 39.5°C | Route to Molemo \\
+Cold Stress | temp < 36.0°C | Route to Loapi \\
+Error | Any error condition | Route to Supervisor \\
+\hline
+\end{tabular}
+\caption{State Machine Definition}
+\end{table}
+
+\subsection{State Transitions}
+
+State transitions are deterministic based on temperature thresholds:
+
+\begin{itemize}
+    \item Normal $\rightarrow$ Fever: Temperature exceeds 39.5°C
+    \item Normal $\rightarrow$ Cold Stress: Temperature drops below 36.0°C
+    \item Fever $\rightarrow$ Normal: Temperature returns to normal range
+    \item Cold Stress $\rightarrow$ Normal: Temperature returns to normal range
+    \item Any $\rightarrow$ Error: Processing error detected
+    \item Error $\rightarrow$ Normal: Error resolved
+\end{itemize}
+
+\section{Self-Healing Design}
+
+\subsection{Error Detection}
+
+The system detects errors through:
+
+\begin{itemize}
+    \item Exception handling in routing logic
+    \item Context validation before routing
+    \item Data availability checks
+    \item Agent response validation
+\end{itemize}
+
+\subsection{Fallback Strategies}
+
+The system implements the following fallback strategies:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Error Type} & \textbf{Fallback Action} & \textbf{Recovery Message} \\
+\hline
+No Data Found | Request Data Refresh | Requesting data refresh \\
+Context Anomaly | Validate Context | Re-validating regional identifier \\
+Processing Error | Retry Safe Mode | Retrying in safe mode \\
+Unknown Error | Escalate | Escalating to manual review \\
+\hline
+\end{tabular}
+\caption{Fallback Strategies}
+\end{table}
+
+\section{Integration Design}
+
+\subsection{API Contract with INFS Project}
+
+The Lesaka Multi-Agent Orchestration System consumes data from the INFS Data Governance Framework through a well-defined API contract:
+
+\begin{itemize}
+    \item \textbf{Data Access:} Query INFS database for validated telemetry
+    \item \textbf{Permission Respect:} Respect INFS RBAC restrictions
+    \item \textbf{Error Handling:} Standardized error responses
+    \item \textbf{Data Format:} JSON format for data exchange
+\end{itemize}
+
+\subsection{Integration Points}
+
+\begin{itemize}
+    \item \textbf{Database Layer:} Query INFS database for telemetry
+    \item \textbf{Validation Layer:} Use INFS-validated data
+    \item \textbf{Security Layer:} Respect INFS RBAC permissions
+\end{itemize}
+
+\section{Deployment Design}
+
+\subsection{Development Environment}
+
+\begin{itemize}
+    \item Local development with virtual environment
+    \item Python 3.10+ runtime
+    \item NetworkX for graph operations
+    \item SQLite database (provided by INFS project)
+\end{itemize}
+
+\subsection{Production Considerations}
+
+Future production deployment would include:
+
+\begin{itemize}
+    \item Enhanced error logging
+    \item Performance monitoring
+    \item Load balancing for high-volume routing
+    \item Distributed agent deployment
+\end{itemize}
+
+\section{Conclusion}
+
+The design phase has established a comprehensive technical blueprint for the Lesaka Multi-Agent Orchestration System. The design addresses the requirements identified in the analysis phase while incorporating best practices for multi-agent systems, graph algorithms, and self-healing mechanisms. The design is ready for implementation in the next phase.

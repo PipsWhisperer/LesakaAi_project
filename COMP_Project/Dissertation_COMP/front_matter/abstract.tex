@@ -1,0 +1,16 @@
+% Abstract
+
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+
+This dissertation presents the development of the Lesaka Multi-Agent Orchestration System, a multi-agent system designed for intelligent routing of agricultural telemetry data in Botswana. The system addresses critical challenges in traditional livestock management, including centralized processing limitations, lack of intelligent routing, and absence of self-healing capabilities.
+
+The project implements a graph-based orchestration algorithm using a state machine approach for deterministic routing, three specialized agents (Molemo, Loapi, Thekiso) with domain-specific analysis capabilities, and a self-healing mechanism with supervisor agent fallback for fault tolerance. The system is specifically designed for edge deployment in resource-constrained rural environments, using Python for implementation and NetworkX for graph operations.
+
+Key technical contributions include a state machine-based routing algorithm with O(1) complexity, specialized agents for biomedical, environmental, and market analysis, a supervisor agent with comprehensive error recovery, and Botswana-specific customizations including temperature thresholds and agent specializations.
+
+The system was tested for functional correctness, performance, and compliance with COMP 401 module requirements. Results demonstrate perfect routing accuracy (100\%), excellent performance (sub-15ms operations), complete agent specialization accuracy (100\%), full error recovery (100\%), and target algorithm complexity (O(1)). The system achieves full compliance with COMP 401 requirements for graph orchestration, agent specialization, self-healing, and algorithm complexity.
+
+The project demonstrates the successful application of COMP 401 module requirements in a practical context, providing a model for multi-agent systems in agricultural IoT applications. The system represents a solid foundation for modernizing livestock decision-making in Botswana through the integration of graph-based routing, specialized agents, and self-healing mechanisms.
+
+\textbf{Keywords:} Multi-Agent Systems, Graph Orchestration, State Machine, Self-Healing, Agricultural IoT, Botswana, Algorithm Design

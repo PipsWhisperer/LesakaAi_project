@@ -1,0 +1,171 @@
+% Appendices
+
+\chapter*{Appendices}
+\addcontentsline{toc}{chapter}{Appendices}
+
+\section*{Appendix A: Database Schema}
+
+\begin{lstlisting}[language=SQL, caption=Complete Database Schema]
+-- Farmers Table
+CREATE TABLE IF NOT EXISTS farmers (
+    farmer_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    owner_id TEXT UNIQUE NOT NULL,
+    full_name TEXT,
+    district TEXT,
+    registration_date TEXT
+);
+
+-- Cattle Table
+CREATE TABLE IF NOT EXISTS cattle (
+    cattle_id TEXT PRIMARY KEY,
+    owner_id TEXT NOT NULL,
+    breed TEXT,
+    birth_date TEXT,
+    gender TEXT,
+    FOREIGN KEY (owner_id) REFERENCES farmers(owner_id)
+);
+
+-- Telemetry Logs Table
+CREATE TABLE IF NOT EXISTS telemetry_logs (
+    log_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    cattle_id TEXT NOT NULL,
+    temperature REAL NOT NULL,
+    heart_rate INTEGER,
+    timestamp TEXT NOT NULL,
+    validation_status TEXT,
+    FOREIGN KEY (cattle_id) REFERENCES cattle(cattle_id)
+);
+\end{lstlisting}
+
+\section*{Appendix B: Normalization Proofs}
+
+\subsection*{First Normal Form (1NF)}
+- All attributes contain atomic values
+- No repeating groups
+- Each row is unique
+- Primary keys defined
+
+\subsection*{Second Normal Form (2NF)}
+- All tables in 1NF
+- No partial dependencies (single-attribute primary keys)
+- All non-key attributes depend on entire primary key
+
+\subsection*{Third Normal Form (3NF)}
+- All tables in 2NF
+- No transitive dependencies
+- All non-key attributes depend only on primary key
+
+\section*{Appendix C: Validation Rules}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Field} & \textbf{Rule} & \textbf{Range/Values} \\
+\hline
+temperature & 30.0 $\leq$ temp $\leq$ 45.0 & Celsius \\
+district & Must be in allowed regions | Orapa, Serowe, Maun, Ghanzi, etc. \\
+owner\_id & Must be unique & Random 8-character token \\
+cattle\_id & Must be unique | User-defined \\
+\hline
+\end{tabular}
+\caption{Validation Rules Summary}
+\end{table}
+
+\section*{Appendix D: RBAC Permission Matrix}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Permission} & \textbf{Admin} & \textbf{Farmer} & \textbf{Broker} \\
+\hline
+Read all data & Yes & No & No \\
+Read own data & Yes & Yes & No |
+Write own data & Yes & Yes & No |
+Access GPS & Yes & Yes & No |
+View audit logs & Yes & No & No |
+Manage users & Yes & No & No \\
+\hline
+\end{tabular}
+\caption{RBAC Permission Matrix}
+\end{table}
+
+\section*{Appendix E: Test Cases}
+
+\subsection*{Database Test Cases}
+\begin{itemize}
+    \item TC-DB-001: Schema creation - Expected: 3NF compliant tables - Result: Pass
+    \item TC-DB-002: Foreign key constraint - Expected: Rejection of invalid references - Result: Pass
+    \item TC-DB-003: Index performance - Expected: <50ms query time - Result: Pass
+\end{itemize}
+
+\subsection*{Validation Test Cases}
+\begin{itemize}
+    \item TC-VAL-001: Valid temperature (38.5°C) - Expected: Accepted - Result: Pass
+    \item TC-VAL-002: Invalid low temperature (28.0°C) - Expected: Rejected - Result: Pass
+    \item TC-VAL-003: Invalid high temperature (47.5°C) - Expected: Rejected - Result: Pass
+\end{itemize}
+
+\subsection*{RBAC Test Cases}
+\begin{itemize}
+    \item TC-RBAC-001: Admin full access - Expected: Granted - Result: Pass
+    \item TC-RBAC-002: Broker GPS access - Expected: Denied - Result: Pass
+    \item TC-RBAC-003: Farmer own data access - Expected: Granted - Result: Pass
+\end{itemize}
+
+\section*{Appendix F: Code Samples}
+
+\subsection*{Temperature Validation}
+\begin{lstlisting}[language=Python]
+def validate_temperature(self, temp):
+    """Validate temperature is within physiological bounds"""
+    # Added extra check because sensor was sending -0.1 sometimes
+    if temp < self.MIN_TEMP or temp > self.MAX_TEMP:
+        return False, f"Temperature {temp}C outside valid range ({self.MIN_TEMP}-{self.MAX_TEMP}C)"
+    return True, "Valid"
+\end{lstlisting}
+
+\subsection*{Regional Validation}
+\begin{lstlisting}[language=Python]
+def validate_region(self, district):
+    """Validate district is within Botswana regions"""
+    valid_regions = ['Orapa', 'Serowe', 'Maun', 'Ghanzi', 'Francistown', 'Gaborone', 'Lobatse']
+    # Added strip() because user was typing with spaces at the end
+    if district.strip() not in valid_regions:
+        return False, f"District {district} not in valid operational regions"
+    return True, "Valid region"
+\end{lstlisting}
+
+\section*{Appendix G: User Manual}
+
+\subsection*{Getting Started}
+1. Install Python 3.10 or higher
+2. Install required dependencies
+3. Initialize database: \texttt{python lesaka\_validation\_engine.py}
+4. Run validation engine
+
+\subsection*{Registering Farmers}
+1. Call \texttt{register\_farmer(full\_name, district)}
+2. System validates district
+3. System generates anonymized owner ID
+4. Note the owner ID for future reference
+
+\subsection*{Registering Cattle}
+1. Call \texttt{register\_cattle(cattle\_id, owner\_id, breed, birth\_date, gender)}
+2. System validates data
+3. System stores cattle information
+4. System confirms successful registration
+
+\section*{Appendix H: Glossary}
+
+\begin{description}
+    \item[3NF] Third Normal Form - A database design principle that eliminates redundancy
+    \item[RBAC] Role-Based Access Control - Method of regulating access to computer resources
+    \item[Privacy-by-Design] An approach to systems engineering that embeds privacy protections
+    \item[Data Governance] Overall management of data availability, usability, integrity, and security
+    \item[SQLite] Relational database management system contained in a C library
+    \item[Normalization] Process of organizing data to minimize redundancy
+    \item[Foreign Key] A field that uniquely identifies a row in another table
+    \item[Primary Key] A unique identifier for a record in a database table
+\end{description}

@@ -1,0 +1,189 @@
+% Chapter 4: Analysis
+
+\section{Introduction}
+
+This chapter presents the analysis phase of the Lesaka Data Governance Framework, including functional and non-functional requirements, use cases, and system constraints. The analysis establishes the foundation for system design and implementation.
+
+\section{Functional Requirements}
+
+\subsection{Database Requirements}
+
+\begin{itemize}
+    \item \textbf{DBR-001:} The system shall implement a 3NF-compliant database schema
+    \item \textbf{DBR-002:} The system shall enforce referential integrity through foreign key constraints
+    \item \textbf{DBR-003:} The system shall prevent data redundancy through normalization
+    \item \textbf{DBR-004:} The system shall support data migration and backup
+\end{itemize}
+
+\subsection{Data Validation Requirements}
+
+\begin{itemize}
+    \item \textbf{DVR-001:} The system shall validate temperature readings (30.0-45.0°C)
+    \item \textbf{DVR-002:} The system shall validate district names against Botswana regions
+    \item \textbf{DVR-003:} The system shall validate data types for all fields
+    \item \textbf{DVR-004:} The system shall provide data quality scoring
+\end{itemize}
+
+\subsection{RBAC Requirements}
+
+\begin{itemize}
+    \item \textbf{RBR-001:} The system shall implement role-based access control
+    \item \textbf{RBR-002:} The system shall support three user roles (admin, farmer, broker)
+    \item \textbf{RBR-003:} The system shall restrict broker access to GPS coordinates
+    \item \textbf{RBR-004:} The system shall log all access attempts
+\end{itemize}
+
+\subsection{Privacy Requirements}
+
+\begin{itemize}
+    \item \textbf{PRR-001:} The system shall generate anonymized owner IDs for farmers
+    \item \textbf{PRR-002:} The system shall separate personal data from telemetry data
+    \item \textbf{PRR-003:} The system shall implement audit logging for data access
+\end{itemize}
+
+\section{Non-Functional Requirements}
+
+\subsection{Performance Requirements}
+
+\begin{itemize}
+    \item \textbf{NFR-001:} Database queries shall complete within 50ms (p95)
+    \item \textbf{NFR-002:} The system shall support 10,000 telemetry records per day
+    \item \textbf{NFR-003:} Data validation shall complete within 10ms per record
+\end{itemize}
+
+\subsection{Security Requirements}
+
+\begin{itemize}
+    \item \textbf{NFR-004:} The system shall enforce RBAC at all data access points
+    \item \textbf{NFR-005:} The system shall log all data access attempts
+    \item \textbf{NFR-006:} The system shall prevent SQL injection through parameterized queries
+\end{itemize}
+
+\subsection{Reliability Requirements}
+
+\begin{itemize}
+    \item \textbf{NFR-007:} The system shall maintain 99.9\% data consistency
+    \item \textbf{NFR-008:} The system shall recover from database errors gracefully
+\end{itemize}
+
+\subsection{Usability Requirements}
+
+\begin{itemize}
+    \item \textbf{NFR-009:} The system shall provide clear error messages
+    \item \textbf{NFR-010:} The system shall document all validation rules
+\end{itemize}
+
+\section{Business Rules}
+
+\begin{itemize}
+    \item \textbf{BR-001:} All data must pass 3NF validation before storage
+    \item \textbf{BR-002:} Broker users cannot access GPS coordinates
+    \item \textbf{BR-003:} All data access must be logged for audit trail
+    \item \textbf{BR-004:} District must be one of: Orapa, Serowe, Maun, Ghanzi, Francistown, Gaborone, Lobatse
+    \item \textbf{BR-005:} Temperature readings outside 30.0-45.0°C shall be rejected
+\end{itemize}
+
+\section{Assumptions}
+
+\begin{itemize}
+    \item Users have basic computer literacy
+    \item Internet connectivity is available (though may be intermittent)
+    \item Sensor devices provide data in the expected format
+    \item Farmers will register with accurate information
+\end{itemize}
+
+\section{Constraints}
+
+\subsection{Technical Constraints}
+
+\begin{itemize}
+    \item System must run on standard hardware (no specialized equipment)
+    \item Database must be SQLite for edge deployment
+    \item Backend must be Python-based
+\end{itemize}
+
+\subsection{Time Constraints}
+
+\begin{itemize}
+    \item Development must be completed within academic semester timeline
+    \item Testing must be completed before submission deadline
+    \item Documentation must be finalized before final submission
+\end{itemize}
+
+\subsection{Resource Constraints}
+
+\begin{itemize}
+    \item Single developer context
+    \item Limited access to real-world testing environments
+    \item Budget constraints for external services
+\end{itemize}
+
+\section{Use Cases}
+
+\subsection{Use Case 1: Farmer Registration}
+
+\begin{itemize}
+    \item \textbf{Actor:} Farmer
+    \item \textbf{Precondition:} User is not registered
+    \item \textbf{Main Flow:}
+    \begin{enumerate}
+        \item User navigates to registration page
+        \item User enters personal details and district
+        \item System validates district against allowed regions
+        \item System generates anonymized owner ID
+        \item System stores farmer information in 3NF-compliant database
+        \item System confirms successful registration
+    \end{enumerate}
+    \item \textbf{Postcondition:} User is registered with anonymized owner ID
+    \item \textbf{Alternative Flow:} Invalid district → System rejects registration with error message
+\end{itemize}
+
+\subsection{Use Case 2: Data Validation}
+
+\begin{itemize}
+    \item \textbf{Actor:} Validation Engine
+    \item \textbf{Precondition:} Telemetry data is received
+    \item \textbf{Main Flow:}
+    \begin{enumerate}
+        \item System receives telemetry data
+        \item System validates temperature range (30.0-45.0°C)
+        \item System validates data types
+        \item System calculates data quality score
+        \item System stores valid data with quality score
+        \item System rejects invalid data with reason
+    \end{enumerate}
+    \item \textbf{Postcondition:} Data is validated and stored or rejected with reason
+\end{itemize}
+
+\subsection{Use Case 3: RBAC Enforcement}
+
+\begin{itemize}
+    \item \textbf{Actor:} User (any role)
+    \item \textbf{Precondition:} User attempts to access data
+    \item \textbf{Main Flow:}
+    \begin{enumerate}
+        \item User requests access to data
+        \item System checks user role
+        \item System checks permission matrix for role
+        \item System grants or denies access based on permissions
+        \item System logs access attempt
+    \end{enumerate}
+    \item \textbf{Postcondition:} Access is granted or denied with audit log
+    \item \textbf{Alternative Flow:} Broker requests GPS → System denies access
+\end{itemize}
+
+\section{Context Diagram}
+
+The system context identifies external entities and their interactions with the Lesaka Data Governance Framework:
+
+\begin{itemize}
+    \item \textbf{Farmers:} Register cattle, view data, receive alerts
+    \item \textbf{Administrators:} Manage users, view audit logs, configure system
+    \item \textbf{Brokers:} View market information (restricted access)
+    \item \textbf{Sensors:} Transmit telemetry data
+    \item \textbf{COMP Project:} Consumes validated data for orchestration
+\end{itemize}
+
+\section{Conclusion}
+
+The analysis phase has established clear functional and non-functional requirements, business rules, and use cases for the Lesaka Data Governance Framework. These requirements align with INFS 401 module requirements and address the practical needs of agricultural IoT data governance in Botswana.

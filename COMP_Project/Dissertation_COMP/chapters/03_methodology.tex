@@ -1,0 +1,184 @@
+% Chapter 3: Methodology
+
+\section{Introduction}
+
+This chapter describes the research methodology adopted for the Lesaka Multi-Agent Orchestration System. The methodology encompasses the research design, development approach, algorithm design methods, and evaluation strategies employed to achieve the project objectives.
+
+\section{Research Design}
+
+The project follows a design science research methodology \cite{hevner2004design}, which focuses on creating and evaluating IT artifacts intended to solve identified problems. Design science research is particularly appropriate for this project as it emphasizes the creation of practical artifacts (graph orchestration algorithm, specialized agents self-healing mechanisms) while contributing to theoretical knowledge.
+
+The research design consists of the following phases:
+
+\begin{enumerate}
+    \item Problem identification and motivation
+    \item Objectives definition
+    \item Design and development
+    \item Demonstration
+    \item Evaluation
+\end{enumerate}
+
+\section{Development Approach}
+
+\subsection{Agile Development}
+
+The project employs an agile development methodology with iterative sprints. This approach allows for:
+
+\begin{itemize}
+    \item Continuous integration of feedback
+    \item Flexibility in responding to changing requirements
+    \item Early detection of algorithmic issues
+    \item Regular progress demonstration
+\end{itemize}
+
+The development process is organized into two-week sprints, with each sprint focusing on specific components:
+- Sprint 1: Graph orchestration algorithm design
+- Sprint 2: Agent implementation (Molemo, Loapi, Thekiso)
+- Sprint 3: Supervisor agent and self-healing
+- Sprint 4: State machine implementation
+- Sprint 5: Integration and testing
+
+\subsection{Version Control}
+
+Git is used for version control with the following branching strategy:
+
+\begin{itemize}
+    \item \texttt{main} branch for stable releases
+    \item \texttt{develop} branch for integration
+    \item Feature branches for new functionality
+\end{itemize}
+
+This branching strategy ensures that the main branch always contains stable, tested code while allowing for experimental development in feature branches.
+
+\section{Algorithm Design Methods}
+
+\subsection{Graph Algorithm Design}
+
+The graph-based orchestration algorithm was designed through:
+
+\begin{enumerate}
+    \item Analysis of routing requirements (temperature thresholds, agent specializations)
+    \item Design of graph structure (nodes, edges, weights)
+    \item Implementation of routing logic (state machine)
+    \item Complexity analysis (time and space complexity)
+    \item Optimization for performance
+\end{enumerate}
+
+\subsection{State Machine Design}
+
+The state machine was designed through:
+
+\begin{enumerate}
+    \item Definition of states (normal, fever, cold stress, error)
+    \item Definition of transitions (temperature-based routing)
+    \item Implementation of transition logic
+    \item Validation of state reachability
+    \item Testing of edge cases
+\end{enumerate}
+
+\section{System Development}
+
+\subsection{Graph Orchestrator Development}
+
+The graph orchestrator was developed through the following steps:
+
+\begin{enumerate}
+    \item Requirement analysis for routing logic
+    \item Design of state machine
+    \item Implementation of routing algorithm
+    \item Integration with INFS database
+    \item Testing with synthetic data
+\end{enumerate}
+
+The development process included iterative refinement based on testing results and performance analysis.
+
+\subsection{Agent Development}
+
+The specialized agents were developed through:
+
+\begin{enumerate}
+    \item Requirement analysis for agent specialization
+    \item Design of agent logic
+    \item Implementation using Python
+    \item Integration with orchestrator
+    \item Testing with synthetic data
+\end{enumerate}
+
+The agent implementation includes student-like comments and temporary fixes to reflect authentic development practices.
+
+\subsection{Self-Healing Development}
+
+The self-healing mechanism was developed through:
+
+\begin{enumerate}
+    \item Analysis of failure scenarios
+    \item Design of fallback strategies
+    \item Implementation of supervisor agent
+    \item Integration with orchestrator
+    \item Testing of error recovery
+\end{enumerate}
+
+\section{Evaluation Methods}
+
+\subsection{Algorithmic Testing}
+
+Algorithmic testing verifies that each component performs its intended function:
+
+\begin{itemize}
+    \item Routing correctness (correct agent selection)
+    \item State machine validity (correct state transitions)
+    \item Self-healing effectiveness (error recovery)
+    \item Algorithm complexity analysis
+\end{itemize}
+
+\subsection{Performance Testing}
+
+Performance testing evaluates system responsiveness under various loads:
+
+\begin{itemize}
+    \item Routing latency measurement
+    \item Agent processing time
+    \item Resource utilization monitoring
+    \item Algorithm efficiency analysis
+\end{itemize}
+
+\subsection{Validation Testing}
+
+Validation testing ensures the system meets COMP 401 requirements:
+
+\begin{itemize}
+    \item Graph orchestration verification
+    \item Agent specialization testing
+    \item Self-healing mechanism testing
+    \item State machine validation
+\end{itemize}
+
+\section{Ethical Considerations}
+
+The project addresses ethical considerations through:
+
+\begin{itemize}
+    \item Respect for INFS data governance rules
+    \item Transparent algorithmic decision-making
+    \item Fair agent routing (no bias)
+    \item Accountability through logging
+\end{itemize}
+
+The project follows ethical guidelines for algorithmic decision-making, ensuring that the system operates fairly and transparently.
+
+\section{Limitations of Methodology}
+
+The methodology has the following limitations:
+
+\begin{itemize}
+    \item Limited access to real-world deployment environments
+    \item Synthetic test data may not reflect all real-world scenarios
+    \item Time constraints may limit comprehensive algorithm optimization
+    \item Single-developer context may affect code review depth
+\end{itemize}
+
+These limitations are acknowledged and addressed through careful design and testing strategies.
+
+\section{Conclusion}
+
+The methodology adopted provides a structured approach to developing the Lesaka Multi-Agent Orchestration System while ensuring alignment with COMP 401 requirements. The design science research approach, combined with agile development practices, enables iterative improvement and continuous validation of the system.

@@ -1,0 +1,248 @@
+% Chapter 5: Design
+
+\section{Introduction}
+
+This chapter presents the detailed design of the Lesaka Data Governance Framework, including database design, validation engine design, RBAC design, and security considerations. The design phase translates the requirements identified in the analysis phase into concrete technical specifications.
+
+\section{Database Design}
+
+\subsection{Schema Overview}
+
+The database follows Third Normal Form (3NF) principles to eliminate redundancy and ensure data integrity. The schema consists of three main tables:
+
+\subsection{Table: Farmers}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Column} & \textbf{Type} & \textbf{Constraints} & \textbf{Description} \\
+\hline
+farmer\_id & INTEGER & PRIMARY KEY AUTOINCREMENT & Unique identifier \\
+owner\_id & TEXT & UNIQUE NOT NULL & Anonymized token \\
+full\_name & TEXT & NOT NULL & Farmer's full name \\
+district & TEXT & NOT NULL & Operational district \\
+registration\_date & TEXT & NOT NULL & Registration timestamp \\
+\hline
+\end{tabular}
+\caption{Farmers Table Schema}
+\end{table}
+
+\subsection{Table: Cattle}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Column} & \textbf{Type} & \textbf{Constraints} & \textbf{Description} \\
+\hline
+cattle\_id & TEXT & PRIMARY KEY & Unique cattle identifier \\
+owner\_id & TEXT & NOT NULL, FK & Reference to farmers \\
+breed & TEXT & NOT NULL & Cattle breed \\
+birth\_date & TEXT & NOT NULL & Date of birth \\
+gender & TEXT & NOT NULL & Male/Female \\
+\hline
+\end{tabular}
+\caption{Cattle Table Schema}
+\end{table}
+
+\subsection{Table: Telemetry Logs}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Column} & \textbf{Type} & \textbf{Constraints} & \textbf{Description} \\
+\hline
+log\_id & INTEGER & PRIMARY KEY AUTOINCREMENT & Log identifier \\
+cattle\_id & TEXT & NOT NULL, FK & Reference to cattle \\
+temperature & REAL & NOT NULL & Temperature reading \\
+heart\_rate & INTEGER & NULL & Heart rate reading \\
+timestamp & TEXT & NOT NULL & Reading timestamp \\
+validation\_status & TEXT & NOT NULL & VALID/REJECTED \\
+\hline
+\end{tabular}
+\caption{Telemetry Logs Table Schema}
+\end{table}
+
+\subsection{3NF Compliance}
+
+The schema achieves Third Normal Form through:
+
+\begin{itemize}
+    \item \textbf{1NF:} All attributes contain atomic values, no repeating groups
+    \item \textbf{2NF:} No partial dependencies (all tables have single-attribute primary keys)
+    \item \textbf{3NF:} No transitive dependencies (all non-key attributes depend only on primary key)
+\end{itemize}
+
+Detailed normalization proofs are provided in the database documentation.
+
+\subsection{Index Design}
+
+Performance optimization through indexing:
+
+\begin{itemize}
+    \item \texttt{idx\_telemetry\_cattle} on telemetry\_logs(cattle\_id) - improves cattle history queries
+    \item \texttt{idx\_telemetry\_timestamp} on telemetry\_logs(timestamp) - improves time-range queries
+    \item \texttt{idx\_cattle\_owner} on cattle(owner\_id) - improves farmer cattle list queries
+\end{itemize}
+
+These indexes were added after testing revealed performance bottlenecks with large datasets.
+
+\section{Data Validation Design}
+
+\subsection{Validation Engine Architecture}
+
+The validation engine follows a modular design with separate validators for different data types:
+
+\begin{itemize}
+    \item \textbf{Temperature Validator:} Checks physiological bounds (30.0-45.0°C)
+    \item \textbf{District Validator:} Validates against Botswana regions
+    \item \textbf{Data Type Validator:} Ensures correct data types
+    \item \textbf{Quality Scorer:} Calculates data quality scores
+\end{itemize}
+
+\subsection{Validation Rules}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Field} & \textbf{Type} & \textbf{Validation Rule} & \textbf{Error Message} \\
+\hline
+temperature & REAL & 30.0 $\leq$ temp $\leq$ 45.0 & Temperature outside valid range \\
+district & TEXT & Must be in allowed regions & District not in valid regions \\
+owner\_id & TEXT & Must be unique & Owner ID collision \\
+cattle\_id & TEXT & Must be unique & Cattle ID collision \\
+\hline
+\end{tabular}
+\caption{Validation Rules}
+\end{table}
+
+\subsection{Quality Scoring Algorithm}
+
+Data quality is scored based on:
+
+\begin{itemize}
+    \item Completeness: Percentage of required fields present
+    \item Validity: Percentage of fields passing validation
+    \item Consistency: Consistency with historical data
+    \item Timeliness: Data freshness
+\end{itemize}
+
+The quality score is calculated as a weighted average of these factors.
+
+\section{RBAC Design}
+
+\subsection{Role Hierarchy}
+
+The system implements a three-tier role hierarchy:
+
+\begin{enumerate}
+    \item \textbf{Admin:} Full system access
+    \item \textbf{Farmer:} Access to own data
+    \item \textbf{Broker:} Limited market access
+\end{enumerate}
+
+\subsection{Permission Matrix}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Permission} & \textbf{Admin} & \textbf{Farmer} & \textbf{Broker} \\
+\hline
+Read all data & Yes & No & No \\
+Read own data & Yes & Yes & No \\
+Write own data & Yes & Yes & No \\
+Access GPS & Yes & Yes & No \\
+View audit logs & Yes & No & No \\
+Manage users & Yes & No & No \\
+\hline
+\end{tabular}
+\caption{RBAC Permission Matrix}
+\end{table}
+
+\subsection{Privacy-by-Design Features}
+
+The RBAC system implements privacy-by-design through:
+
+\begin{itemize}
+    \item \textbf{Anonymized IDs:} Farmers are identified by anonymized owner IDs
+    \item \textbf{Data Separation:} Personal data separated from telemetry data
+    \item \textbf{Field-Level Restrictions:} GPS coordinates restricted for brokers
+    \item \textbf{Audit Logging:} All access attempts logged
+\end{itemize}
+
+\section{Security Design}
+
+\subsection{Data Protection}
+
+Security measures implemented:
+
+\begin{itemize}
+    \item \textbf{Parameterized Queries:} Prevent SQL injection
+    \item \textbf{Input Sanitization:} Validate all user inputs
+    \item \textbf{Access Control:} RBAC at all data access points
+    \item \textbf{Audit Logging:} Comprehensive access tracking
+\end{itemize}
+
+\subsection{Audit Logging}
+
+Audit logs capture:
+
+\begin{itemize}
+    \item User ID and role
+    \item Action performed
+    \item Resource accessed
+    \item Timestamp
+    \item Success/failure status
+\end{itemize}
+
+Audit logs are stored separately from operational data for security and compliance.
+
+\section{Integration Design}
+
+\subsection{API Contract with COMP Project}
+
+The Lesaka Data Governance Framework provides data to the COMP Multi-Agent Orchestration System through a well-defined API contract:
+
+\begin{itemize}
+    \item \textbf{Data Access:} COMP project reads validated telemetry data
+    \item \textbf{Permission Respect:} COMP project respects RBAC restrictions
+    \item \textbf{Error Handling:} Standardized error responses
+    \item \textbf{Data Format:} JSON format for data exchange
+\end{itemize}
+
+\subsection{Integration Points}
+
+\begin{itemize}
+    \item \textbf{Database Layer:} COMP project queries INFS database
+    \item \textbf{Validation Layer:} COMP project uses INFS-validated data
+    \item \textbf{Security Layer:} COMP project respects INFS RBAC
+\end{itemize}
+
+\section{Deployment Design}
+
+\subsection{Development Environment}
+
+\begin{itemize}
+    \item Local development with virtual environment
+    \item SQLite database for testing
+    \item Python 3.10+ runtime
+\end{itemize}
+
+\subsection{Production Considerations}
+
+Future production deployment would include:
+
+\begin{itemize}
+    \item PostgreSQL migration for enhanced features
+    \item Database backup and recovery procedures
+    \item Enhanced security measures
+    \item Cloud hosting options
+\end{itemize}
+
+\section{Conclusion}
+
+The design phase has established a comprehensive technical blueprint for the Lesaka Data Governance Framework. The design addresses the requirements identified in the analysis phase while incorporating best practices for database normalization, data validation, RBAC, and security. The design is ready for implementation in the next phase.

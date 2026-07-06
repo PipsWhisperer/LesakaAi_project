@@ -1,0 +1,166 @@
+% Appendices
+
+\chapter*{Appendices}
+\addcontentsline{toc}{chapter}{Appendices}
+
+\section*{Appendix A: Routing Algorithm}
+
+\begin{algorithm}
+\caption{Telemetry Routing Algorithm}
+\begin{algorithmic}[1]
+\Require{telemetry\_data, cattle\_id}
+\Ensure{agent\_response}
+\State Fetch temperature from telemetry\_data
+\State Validate context for cattle\_id
+\If{context is invalid}
+    \State Return Supervisor response
+\EndIf
+\If{temperature > 39.5}
+    \State Route to Molemo (fever detection)
+\ElsIf{temperature < 36.0}
+    \State Route to Loapi (cold stress)
+\Else
+    \State Route to Thekiso (market assessment)
+\EndIf
+\State Return agent response
+\end{algorithmic}
+\end{algorithm}
+
+\section*{Appendix B: State Machine Definition}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{State} & \textbf{Condition} & \textbf{Action} \\
+\hline
+Normal | 36.0°C $\leq$ temp $\leq$ 39.5°C | Route to Thekiso \\
+Fever | temp > 39.5°C | Route to Molemo \\
+Cold Stress | temp < 36.0°C | Route to Loapi \\
+Error | Any error condition | Route to Supervisor \\
+\hline
+\end{tabular}
+\caption{State Machine Definition}
+\end{table}
+
+\section*{Appendix C: Agent Specifications}
+
+\subsection*{Agent Molemo Specifications}
+\begin{itemize}
+    \item \textbf{Specialization:} Biomedical analysis
+    \item \textbf{Input:} Temperature, heart rate
+    \item \textbf{Critical Threshold:} $\geq$ 41.0°C
+    \item \textbf{High Threshold:} $\geq$ 39.5°C
+    \item \textbf{Normal Range:} < 39.5°C
+\end{itemize}
+
+\subsection*{Agent Loapi Specifications}
+\begin{itemize}
+    \item \textbf{Specialization:} Environmental analysis
+    \item \textbf{Input:} Temperature, humidity
+    \item \textbf{Severe Threshold:} $\leq$ 34.0°C
+    \item \textbf{Moderate Threshold:} $\leq$ 36.0°C
+    \item \textbf{Normal Range:} > 36.0°C
+\end{itemize}
+
+\subsection*{Agent Thekiso Specifications}
+\begin{itemize}
+    \item \textbf{Specialization:} Market assessment
+    \item \textbf{Input:} Temperature, heart rate
+    \item \textbf{Optimal Range:} 36.0-39.5°C
+    \item \textbf{Grading:} A, B, C based on health status
+\end{itemize}
+
+\section*{Appendix D: Algorithm Complexity Analysis}
+
+\subsection*{Routing Algorithm Complexity}
+\begin{itemize}
+    \item \textbf{Time Complexity:} O(1) - Constant time for threshold comparison
+    \item \textbf{Space Complexity:} O(1) - Constant space for routing decision
+    \item \textbf{Determinism:} Deterministic routing based on temperature
+\end{itemize}
+
+\subsection*{State Machine Complexity}
+\begin{itemize}
+    \item \textbf{Time Complexity:} O(1) - Constant time for state transition
+    \item \textbf{Space Complexity:} O(1) - Constant space for state storage
+    \item \textbf{Determinism:} Deterministic transitions based on thresholds
+\end{itemize}
+
+\section*{Appendix E: Test Cases}
+
+\subsection*{Routing Test Cases}
+\begin{itemize}
+    \item TC-RT-001: Fever routing (40.0°C) - Expected: Molemo - Result: Pass
+    \item TC-RT-002: Cold routing (35.0°C) - Expected: Loapi - Result: Pass
+    \item TC-RT-003: Market routing (38.0°C) - Expected: Thekiso - Result: Pass
+    \item TC-RT-004: Error routing - Expected: Supervisor - Result: Pass
+\end{itemize}
+
+\subsection*{Agent Test Cases}
+\begin{itemize}
+    \item TC-AG-001: Molemo critical (41.5°C) - Expected: CRITICAL - Result: Pass
+    \item TC-AG-002: Molemo high (40.0°C) - Expected: HIGH - Result: Pass
+    \item TC-AG-003: Loapi severe (33.0°C) - Expected: SEVERE - Result: Pass
+    \item TC-AG-004: Thekiso Grade A - Expected: Grade A - Result: Pass
+\end{itemize}
+
+\section*{Appendix F: Code Samples}
+
+\subsection*{Graph Orchestrator}
+\begin{lstlisting}[language=Python]
+class GraphOrchestrator:
+    def __init__(self, db_path):
+        self.db_path = db_path
+        # temp fix for the race condition I saw yesterday
+        self.lock = False
+
+    def route_telemetry(self, cattle_id):
+        try:
+            conn = sqlite3.connect(self.db_path)
+            cursor = conn.cursor()
+            cursor.execute("SELECT temperature FROM telemetry_logs WHERE cattle_id = ? ORDER BY log_id DESC LIMIT 1", (cattle_id,))
+            row = cursor.fetchone()
+            conn.close()
+
+            if not row:
+                return self.agent_supervisor(cattle_id, "NO_DATA_FOUND")
+
+            temp = row[0]
+            
+            if temp > 39.5:
+                return self.agent_molemo(cattle_id, "HIGH_FEVER_RISK")
+            elif temp < 36.0:
+                return self.agent_loapi(cattle_id, "COLD_STRESS")
+            else:
+                return self.agent_thekiso(cattle_id, "MARKET_OPTIMAL")
+        except Exception as e:
+            return self.agent_supervisor(cattle_id, f"PROCESSING_ERROR: {str(e)}")
+\end{lstlisting}
+
+\section*{Appendix G: User Manual}
+
+\subsection*{Getting Started}
+1. Install Python 3.10 or higher
+2. Install NetworkX library
+3. Initialize orchestrator: \texttt{python graph\_orchestrator.py}
+4. Run routing tests
+
+\subsection*{Routing Telemetry}
+1. Call \texttt{route\_telemetry(cattle\_id)}
+2. System fetches temperature from INFS database
+3. System routes to appropriate agent
+4. System returns agent response
+
+\section*{Appendix H: Glossary}
+
+\begin{description}
+    \item[MAS] Multi-Agent System - System composed of multiple interacting autonomous agents
+    \item[Graph Orchestration] Using graph theory to model agent interactions and routing
+    \item[State Machine] Mathematical model of computation that defines behavior based on states
+    \item[Self-Healing] Ability of a system to recover from failures without human intervention
+    \item[Agent Specialization] Agents with expertise in specific domains
+    \item[O(1) Complexity] Constant time complexity - execution time does not depend on input size
+    \item[DCG] Directed Cyclic Graph - Graph with directed edges and cycles
+    \item[Supervisor Agent] Agent that provides oversight and fallback capabilities
+\end{description}

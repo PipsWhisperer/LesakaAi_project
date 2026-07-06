@@ -1,0 +1,16 @@
+% Abstract
+
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+
+This dissertation presents the development of the Lesaka Data Governance Framework, a comprehensive data management system designed for agricultural IoT applications in Botswana. The system addresses critical challenges in traditional livestock management, including poor data governance, limited data integrity, and insufficient privacy protection.
+
+The project implements a Third Normal Form (3NF) database schema to ensure data integrity and eliminate redundancy, a data validation engine with quality scoring to maintain data quality, and a Role-Based Access Control (RBAC) system with privacy-by-design features to protect farmer data. The system is specifically designed for edge deployment in resource-constrained rural environments, using SQLite for database management and Python for backend implementation.
+
+Key technical contributions include a 3NF-compliant database schema with comprehensive normalization proofs, a modular validation engine with context-specific rules for Botswana regions, an RBAC system with fine-grained permissions and audit logging, and privacy protection through anonymized farmer IDs and field-level data restrictions.
+
+The system was tested for functional correctness, performance, and compliance with INFS 401 module requirements. Results demonstrate excellent database performance (sub-25ms operations), effective data validation (91.8\% accuracy), successful RBAC implementation with 100\% privacy protection, and complete anomaly prevention through 3NF normalization. The system achieves full compliance with INFS 401 requirements for database design, data integrity, and privacy protection.
+
+The project demonstrates the successful application of INFS 401 module requirements in a practical context, providing a model for data governance in agricultural IoT systems. The system represents a solid foundation for modernizing livestock data management in Botswana through the integration of robust database design, comprehensive data validation, and privacy-by-design principles.
+
+\textbf{Keywords:} Data Governance, 3NF Database, Privacy-by-Design, RBAC, Agricultural IoT, Botswana, Data Validation

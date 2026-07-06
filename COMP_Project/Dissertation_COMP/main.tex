@@ -1,0 +1,138 @@
+% ==============================================================================
+% LESAKA MULTI-AGENT ORCHESTRATION SYSTEM: COMP 401 DISSERTATION
+% Main LaTeX Document
+% ==============================================================================
+
+\documentclass[12pt,a4paper]{report}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{titling}
+\usepackage{setspace}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+% Page Geometry
+\geometry{
+    left=3cm,
+    right=2.5cm,
+    top=2.5cm,
+    bottom=2.5cm
+}
+
+% Line Spacing
+\onehalfspacing
+
+% Header/Footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\leftmark}
+\fancyhead[R]{\thepage}
+\fancyfoot[C]{}
+
+% Chapter Formatting
+\titleformat{\chapter}
+{\normalfont\huge\bfseries}{\thechapter}{1em}{}
+
+% Code Listing Style
+\lstset{
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green!60!black},
+    stringstyle=\color{red},
+    breaklines=true,
+    frame=single,
+    showstringspaces=false
+}
+
+% Algorithm Style
+\algrenewcommand{\algorithmicrequire}{\textbf{Require:}}
+\algrenewcommand{\algorithmicensure}{\textbf{Ensure:}}
+\algrenewcommand{\algorithmicreturn}{\textbf{return}}
+
+% Hyperlink Setup
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cyan,
+    pdfpagemode=UseNone
+}
+
+% Title Information
+\title{Lesaka Multi-Agent Orchestration System}
+\subtitle{Graph-Based Routing for Agricultural Telemetry}
+\author{Andries Mooketsi Moiteelasilo}
+\date{July 2026}
+
+\begin{document}
+
+% ==============================================================================
+% FRONT MATTER
+% ==============================================================================
+
+\include{front_matter/title_page}
+\include{front_matter/declaration}
+\include{front_matter/abstract}
+\include{front_matter/acknowledgements}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+% ==============================================================================
+% CHAPTERS
+% ==============================================================================
+
+\chapter{Introduction}
+\include{chapters/01_introduction}
+
+\chapter{Literature Review}
+\include{chapters/02_literature_review}
+
+\chapter{Methodology}
+\include{chapters/03_methodology}
+
+\chapter{Analysis}
+\include{chapters/04_analysis}
+
+\chapter{Design}
+\include{chapters/05_design}
+
+\chapter{Implementation}
+\include{chapters/06_implementation}
+
+\chapter{Testing}
+\include{chapters/07_testing}
+
+\chapter{Results}
+\include{chapters/08_results}
+
+\chapter{Discussion}
+\include{chapters/09_discussion}
+
+\chapter{Conclusion}
+\include{chapters/10_conclusion}
+
+% ==============================================================================
+% BACK MATTER
+% ==============================================================================
+
+\include{back_matter/references}
+\include{back_matter/appendices}
+
+\end{document}
