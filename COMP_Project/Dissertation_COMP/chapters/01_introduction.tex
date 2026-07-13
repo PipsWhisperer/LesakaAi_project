@@ -2,63 +2,63 @@
 
 \section{Background}
 
-Multi-agent systems (MAS) have emerged as a powerful paradigm for solving complex problems that require distributed decision-making and autonomous coordination. In agricultural contexts, MAS can provide intelligent monitoring and decision support by distributing computational tasks across specialized agents that work together to achieve common goals \cite{wooldridge2009introduction}.
+Multi-agent systems (MAS) are essentially distributed systems where multiple autonomous agents work together to solve problems \cite{wooldridge2009introduction}. The theory is that by distributing decision-making across specialized agents, you can achieve better fault tolerance and scalability than with centralized systems. In agricultural contexts, this makes sense - you can have agents focused on different aspects of livestock management (health, environment, market) working in parallel.
 
-The agricultural sector in Botswana faces significant challenges in livestock management, including delayed health detection, inefficient resource allocation, and limited decision support systems. Traditional centralized systems struggle to handle the complexity and scale of agricultural operations, particularly in resource-constrained rural environments with intermittent connectivity.
+The problem is that Botswana's agricultural sector is still using centralized approaches that don't scale well. Traditional systems struggle with the complexity of large-scale livestock operations, especially in rural areas where connectivity is intermittent. When the central server goes down or the network fails, the entire system stops working.
 
-The application of multi-agent systems to agricultural IoT presents unique opportunities for autonomous decision-making, fault tolerance, and scalability. By distributing intelligence across specialized agents, agricultural systems can achieve resilience, adaptability, and improved decision-making capabilities that are difficult to achieve with centralized approaches \cite{jennings1998agent}.
+Multi-agent systems could change this by distributing intelligence across the system. If one agent fails, others can continue operating. This resilience is crucial for agricultural IoT where network reliability is never guaranteed \cite{jennings1998agent}. But implementing MAS in practice is more complex than the theory suggests - you need to handle agent communication, state management, and error recovery, all of which add significant complexity.
 
 \section{Problem Statement}
 
-Current livestock management systems in Botswana suffer from several critical limitations from an algorithmic and systems engineering perspective:
+Looking at current livestock management systems in Botswana from an algorithmic and systems engineering perspective, I found several critical problems:
 
-1. **Centralized Processing**: Existing systems rely on centralized processing, which creates single points of failure and limits scalability in distributed agricultural environments.
+1. **Centralized Processing**: Existing systems rely on centralized processing, which creates single points of failure. When the central server goes down, everything stops. This is a fundamental architectural flaw for distributed agricultural environments where network reliability is never guaranteed.
 
-2. **Lack of Intelligent Routing**: Telemetry data is processed without intelligent routing to specialized analysis modules, resulting in inefficient processing and delayed decision-making.
+2. **Lack of Intelligent Routing**: Telemetry data gets processed without intelligent routing to specialized analysis modules. Everything goes through the same pipeline regardless of what kind of analysis is needed. This results in inefficient processing and delayed decision-making.
 
-3. **No Self-Healing Capabilities**: Systems lack mechanisms for automatic error recovery and fault tolerance, making them vulnerable to network failures and sensor malfunctions.
+3. **No Self-Healing Capabilities**: Systems lack mechanisms for automatic error recovery. When something fails, it just fails. There's no fallback, no retry logic, no graceful degradation. This makes them vulnerable to network failures and sensor malfunctions, which are common in agricultural settings.
 
-4. **Limited Agent Specialization**: Existing systems do not leverage specialized agents with domain-specific expertise for different types of analysis (biomedical, environmental, market).
+4. **Limited Agent Specialization**: Existing systems don't leverage specialized agents with domain-specific expertise. A general-purpose health agent can't match the accuracy of an agent specifically trained on cattle physiology. This limits the quality of analysis.
 
-5. **No Graph-Based Orchestration**: The absence of graph-based routing algorithms limits the system's ability to handle complex decision-making scenarios and context-aware processing.
+5. **No Graph-Based Orchestration**: The absence of graph-based routing algorithms limits the system's ability to handle complex decision-making scenarios. Linear pipelines can't represent the feedback loops and alternative paths that are needed for context-aware processing.
 
-These challenges highlight the need for a multi-agent orchestration system that addresses algorithmic complexity, fault tolerance, and intelligent decision-making specifically tailored for agricultural telemetry processing.
+These challenges highlight the need for a multi-agent orchestration system that addresses algorithmic complexity, fault tolerance, and intelligent decision-making specifically for agricultural telemetry processing.
 
 \section{Motivation}
 
-The motivation for this project stems from both practical and academic considerations:
+I chose this project for both practical and academic reasons:
 
 **Practical Motivation:**
-- Centralized systems are vulnerable to single points of failure in rural environments
-- Intelligent routing can significantly improve processing efficiency and decision-making speed
-- Self-healing capabilities are essential for reliable operation in network-constrained environments
-- Specialized agents can provide more accurate and context-aware analysis
+- Centralized systems are vulnerable to single points of failure in rural environments. I've seen systems fail because the central server went down, and there was no backup.
+- Intelligent routing can significantly improve processing efficiency and decision-making speed. Instead of sending everything through the same pipeline, routing data to the right agent saves time and resources.
+- Self-healing capabilities are essential for reliable operation in network-constrained environments. When the network drops, the system needs to handle it gracefully rather than just crashing.
+- Specialized agents can provide more accurate and context-aware analysis. An agent focused on cattle fever detection will be more accurate than a general-purpose health agent.
 
 **Academic Motivation:**
-- Limited research exists on graph-based orchestration for agricultural IoT
-- The intersection of multi-agent systems, graph algorithms, and agricultural telemetry presents an interesting research area
-- The project provides an opportunity to apply theoretical algorithmic concepts in a practical context
-- The project aligns with COMP 401 module requirements for algorithmic design and systems engineering
+- There's limited research on graph-based orchestration for agricultural IoT. Most graph algorithm research is done in contexts with reliable infrastructure, not rural Botswana.
+- The intersection of multi-agent systems, graph algorithms, and agricultural telemetry presents an interesting research area. It's not just about applying existing algorithms - it's about adapting them for specific constraints.
+- This project gives me the opportunity to apply theoretical algorithmic concepts in a practical context. Algorithm theory is abstract, but implementing it and seeing it work is different.
+- The project aligns with COMP 401 module requirements for algorithmic design and systems engineering, which is important for my degree.
 
 \section{Aim}
 
-The aim of this project is to design and implement a multi-agent orchestration system for agricultural telemetry data, with a focus on graph-based routing algorithms, agent specialization, and self-healing mechanisms.
+My aim is to design and implement a multi-agent orchestration system for agricultural telemetry data. The focus is on graph-based routing algorithms, agent specialization, and self-healing mechanisms. I want to build a system that can handle the complexity and unreliability of rural agricultural environments while still providing intelligent decision-making.
 
 \section{Objectives}
 
-The specific objectives of this project are:
+The specific objectives I set for this project are:
 
-1. Design and implement a graph-based orchestration algorithm for routing telemetry data to specialized agents.
+1. Design and implement a graph-based orchestration algorithm for routing telemetry data to specialized agents. This is the core algorithmic contribution - the routing logic that determines which agent processes which data.
 
-2. Develop three specialized agents (Molemo, Loapi, Thekiso) with domain-specific analysis capabilities.
+2. Develop three specialized agents (Molemo, Loapi, Thekiso) with domain-specific analysis capabilities. Each agent needs to be good at one thing rather than mediocre at everything.
 
-3. Implement a self-healing mechanism with supervisor node fallback for fault tolerance.
+3. Implement a self-healing mechanism with supervisor node fallback for fault tolerance. When something fails, the system should recover automatically rather than requiring manual intervention.
 
-4. Analyze algorithm complexity and optimize routing efficiency.
+4. Analyze algorithm complexity and optimize routing efficiency. I need to understand the computational complexity of the routing algorithm and ensure it's efficient enough for real-time processing.
 
-5. Validate the system through comprehensive testing to ensure compliance with COMP 401 requirements.
+5. Validate the system through comprehensive testing to ensure compliance with COMP 401 requirements. Testing is what separates theory from practice.
 
-6. Document the system according to academic standards, including algorithm analysis, complexity proofs, and performance evaluation.
+6. Document the system according to academic standards, including algorithm analysis, complexity proofs, and performance evaluation. The documentation needs to be thorough enough that someone else could understand and reproduce the work.
 
 \section{Scope}
 
@@ -70,6 +70,8 @@ The specific objectives of this project are:
 - Algorithm complexity analysis
 - Integration with INFS data governance framework
 
+These are the core algorithmic and systems engineering features that I can realistically implement within the COMP 401 scope. I focused on orchestration, agent specialization, and self-healing because these are the foundational elements of a multi-agent system.
+
 \subsection{Out-of-Scope}
 - Database design and normalization (covered by INFS 401 project)
 - Data validation and quality scoring (covered by INFS 401 project)
@@ -79,37 +81,36 @@ The specific objectives of this project are:
 - Mobile application development
 - Machine learning model training
 
+I deliberately excluded these features to avoid scope creep and to maintain clear separation between COMP 401 and INFS 401. Database design, validation, and access control are data governance concerns that belong in INFS 401, not COMP 401. Hardware integration would require physical sensors and field testing, which isn't feasible within the academic timeline. Machine learning would add significant complexity without directly addressing the core algorithmic problem.
+
 \section{Technologies}
 
-The project utilizes the following technologies:
+I chose these technologies for specific reasons:
 
-- **Python 3.10+**: Primary programming language for backend implementation
-- **NetworkX**: Graph library for orchestration algorithm implementation
-- **SQLite**: Database for data consumption (provided by INFS project)
-- **LaTeX**: Document preparation system for dissertation
+- **Python 3.10+**: Primary programming language for backend implementation. Python is excellent for algorithmic work, has great libraries for graph operations, and is easy to debug. I chose it over alternatives like C++ or Java because development speed is important within the academic timeline.
 
-Technology selection was based on:
-- Suitability for graph algorithm implementation
-- Alignment with COMP 401 module requirements
-- Availability of learning resources and documentation
-- Compatibility with existing development environment
+- **NetworkX**: Graph library for orchestration algorithm implementation. NetworkX provides a comprehensive set of graph algorithms and data structures. I initially considered implementing the graph logic from scratch, but NetworkX handles the common operations efficiently and allows me to focus on the routing logic rather than graph implementation details.
+
+- **SQLite**: Database for data consumption (provided by INFS project). The COMP project consumes data from the INFS database, so I'm using SQLite to maintain consistency. This also keeps the system lightweight for edge deployment.
+
+- **LaTeX**: Document preparation system for dissertation. LaTeX is the standard for academic writing, especially for technical documents with mathematical notation. The learning curve was steep, but it's necessary for professional academic output.
 
 \section{Risks}
 
 \subsection{Technical Risks}
-- **Algorithm Complexity**: Graph-based routing algorithms may be more complex than anticipated
-- **State Management**: Managing state across multiple agents may present challenges
-- **Performance**: Orchestration overhead may impact system performance
+- **Algorithm Complexity**: Graph-based routing algorithms may be more complex than anticipated. I've designed a simplified state machine approach to keep complexity manageable, but there may be edge cases I haven't considered.
+- **State Management**: Managing state across multiple agents may present challenges. Each agent needs to maintain its own state, and the orchestrator needs to track which agent is processing which data. This can get complicated quickly.
+- **Performance**: Orchestration overhead may impact system performance. The routing logic adds computational overhead, and I need to ensure this doesn't make the system too slow for real-time processing.
 
 \subsection{Project Risks}
-- **Time Constraints:** The academic semester timeline may limit the depth of algorithm optimization
-- **Learning Curve:** Graph algorithms and multi-agent systems may require additional learning time
-- **Testing Limitations:** Limited access to real-world agricultural environments may constrain comprehensive testing
+- **Time Constraints**: The academic semester timeline may limit the depth of algorithm optimization. I've prioritized getting a working system over perfect optimization, which means some performance improvements may need to be deferred to COMP 402.
+- **Learning Curve**: Graph algorithms and multi-agent systems may require additional learning time. I've budgeted time for this, but unexpected complexity could delay other parts of the project.
+- **Testing Limitations**: Limited access to real-world agricultural environments may constrain comprehensive testing. I'll need to simulate realistic test scenarios, which may not capture all the edge cases that would occur in actual deployment.
 
 \subsection{Academic Risks}
-- **Scope Creep:** The temptation to add features beyond COMP 401 scope (e.g., database design) must be carefully managed
-- **Algorithm Complexity:** Balancing algorithm sophistication with practical implementation requires careful consideration
-- **Assessment Alignment:** Ensuring the project clearly demonstrates COMP 401 learning outcomes without overlapping with INFS 401
+- **Scope Creep**: The temptation to add features beyond COMP 401 scope (e.g., database design) must be carefully managed. I need to stay focused on algorithmic orchestration and not drift into INFS 401 territory.
+- **Algorithm Complexity**: Balancing algorithm sophistication with practical implementation requires careful consideration. I want to demonstrate algorithmic knowledge without making the system unnecessarily complex.
+- **Assessment Alignment**: Ensuring the project clearly demonstrates COMP 401 learning outcomes without overlapping with INFS 401. The integration architecture document helps with this, but I need to be vigilant about maintaining clear module boundaries.
 
 \section{Dissertation Structure}
 
@@ -125,3 +126,5 @@ This dissertation is organized as follows:
 - **Chapter 8**: Results - Discusses the performance and effectiveness of the implemented system
 - **Chapter 9**: Discussion - Interprets results, compares with literature, and discusses limitations
 - **Chapter 10**: Conclusion - Summarizes contributions, identifies limitations, and suggests future work
+
+The structure follows the standard academic format for a technical dissertation, with each chapter building on the previous one. I've tried to make the narrative flow naturally from problem identification through algorithmic design to implementation and evaluation.

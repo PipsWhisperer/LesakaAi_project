@@ -2,137 +2,103 @@
 
 \section{Introduction}
 
-This chapter reviews existing literature relevant to the Lesaka Multi-Agent Orchestration System. The review focuses on four key areas: multi-agent systems, graph-based orchestration algorithms, agent specialization, and self-healing mechanisms. The review identifies gaps in current research and establishes the theoretical foundation for the project.
+I approached this literature review trying to understand what's actually been done with multi-agent systems in agricultural contexts versus what gets published in academic papers. The research falls into four main areas: multi-agent systems, graph-based orchestration, agent specialization, and self-healing mechanisms. What I found was that most MAS research is done in controlled environments with reliable infrastructure, which doesn't translate well to rural Botswana where connectivity is intermittent and resources are constrained.
 
 \section{Multi-Agent Systems}
 
 \subsection{Agent Architectures}
 
-Multi-agent systems (MAS) are composed of multiple interacting agents that can perceive, reason, and act autonomously \cite{wooldridge2009introduction}. Agents in a MAS can be homogeneous (similar capabilities) or heterogeneous (different specializations), and can cooperate, coordinate, or negotiate to achieve common or individual goals.
+Multi-agent systems (MAS) are essentially collections of autonomous agents that can perceive, reason, and act independently \cite{wooldridge2009introduction}. The theory is straightforward: agents can be homogeneous (same capabilities) or heterogeneous (different specializations), and they work together through cooperation, coordination, or negotiation.
 
-Jennings and Wooldridge \cite{jennings1998agent} identify several key characteristics of MAS:
-- Autonomy: Agents operate without direct human intervention
-- Social ability: Agents interact with other agents
-- Reactivity: Agents respond to environmental changes
-- Pro-activeness: Agents take initiative to achieve goals
+Jennings and Wooldridge \cite{jennings1998agent} list the key characteristics: autonomy, social ability, reactivity, and pro-activeness. These make sense theoretically, but when I tried implementing them for the Lesaka system, I found that autonomy is the hardest to get right. An agent that's too autonomous can make decisions that don't align with farmer needs, while one that's not autonomous enough defeats the purpose of using MAS in the first place.
 
 \subsection{Agent Communication}
 
-Agent communication is essential for coordination in MAS. Common communication paradigms include:
-- Direct message passing
-- Blackboard systems
-- Contract net protocols
-- Shared knowledge bases
+Communication is what makes MAS work, but it's also what makes them fragile. The standard paradigms are direct message passing, blackboard systems, contract net protocols, and shared knowledge bases.
 
-Research by Sycara \cite{sycara1998multiagent} emphasizes the importance of efficient communication protocols for large-scale MAS, particularly in distributed environments with limited connectivity.
+Sycara \cite{sycara1998multiagent} emphasizes efficient communication protocols, which is crucial in theory but problematic in practice. In rural Botswana, network drops are common, so any communication protocol that assumes reliable connectivity will fail. I had to design the Lesaka system with the assumption that messages might not get through, which meant implementing retry logic and fallback states that aren't typically discussed in the literature.
 
 \section{Graph-Based Orchestration}
 
 \subsection{Graph Algorithms in MAS}
 
-Graph-based orchestration uses graph theory to model agent interactions and routing decisions. Nodes represent agents or processing stages, and edges represent communication channels or data flow \cite{diest2010graph}.
+Graph-based orchestration uses graph theory to model how agents interact and how data gets routed between them \cite{diest2010graph}. Nodes are agents or processing stages, edges are communication channels or data flow. The theory is well-established: shortest path for routing, minimum spanning trees for connectivity, maximum flow for resource allocation, graph coloring for conflict resolution.
 
-Common graph algorithms used in MAS include:
-- Shortest path algorithms for routing
-- Minimum spanning trees for connectivity
-- Maximum flow algorithms for resource allocation
-- Graph coloring for conflict resolution
+When I started designing the Lesaka orchestrator, I initially considered using shortest path algorithms. But then I realized that for agricultural telemetry, the routing decision is actually deterministic based on temperature thresholds. A shortest path algorithm would be overkill and add unnecessary complexity. I ended up using a much simpler state machine approach that still uses graph concepts but with O(1) complexity instead of the O(V+E) complexity of standard graph algorithms.
 
 \subsection{Directed Cyclic Graphs (DCG)}
 
-Directed Cyclic Graphs allow for feedback loops and iterative processing, which are essential for self-healing and adaptive behavior in MAS \cite{ghosh2007self}. DCGs enable agents to route data back through previous stages for reprocessing or error recovery.
+Directed Cyclic Graphs allow feedback loops, which is essential for self-healing \cite{ghosh2007self}. If an agent fails, the system can route data back through a different path or retry the same agent. This is exactly what I needed for the Lesaka system - when an error occurs, the data gets routed to the supervisor agent instead of just failing.
 
-Research by Ghosh et al. \cite{ghosh2007self} demonstrates that DCG-based orchestration provides superior fault tolerance compared to linear pipelines, particularly in distributed systems with unreliable communication.
+Ghosh et al. \cite{ghosh2007self} show that DCG-based orchestration provides better fault tolerance than linear pipelines. This makes sense intuitively: a linear pipeline has a single point of failure at each stage, while a DCG has multiple paths. The challenge is managing the complexity - DCGs are harder to reason about and debug than linear systems. I had to add extensive logging to the Lesaka system to track which path data actually took through the graph.
 
 \section{Agent Specialization}
 
 \subsection{Domain-Specific Agents}
 
-Specialized agents have expertise in specific domains and can provide more accurate analysis than general-purpose agents. In agricultural contexts, specialized agents can focus on:
-- Biomedical analysis (health monitoring)
-- Environmental analysis (weather, conditions)
-- Market analysis (pricing, timing)
-- Resource optimization (feed, water)
+The idea behind specialized agents is that an agent focused on one domain will be more accurate than a general-purpose agent trying to do everything. For agriculture, the obvious specializations are biomedical analysis, environmental analysis, market analysis, and resource optimization.
 
-Research by Luck et al. \cite{luck2003agent} demonstrates that specialized agents can achieve higher accuracy in domain-specific tasks compared to general-purpose agents.
+Luck et al. \cite{luck2003agent} show that specialized agents achieve higher accuracy in their domains. This aligns with my experience implementing the Lesaka agents. Agent Molemo, which focuses on fever detection, uses temperature thresholds that are specifically calibrated for cattle physiology. A general-purpose health agent would need to handle multiple species and would likely be less accurate for cattle specifically.
+
+The trade-off is complexity. Each specialized agent needs its own logic, thresholds, and domain knowledge. For Lesaka, I implemented three agents (Molemo, Loapi, Thekiso), and even that required significant domain research to get the thresholds right. Adding more agents would increase the system's capability but also increase the maintenance burden.
 
 \subsection{Agent Collaboration}
 
-Specialized agents must collaborate effectively to achieve system-level goals. Collaboration mechanisms include:
-- Task allocation
-- Result aggregation
-- Conflict resolution
-- Consensus building
+Specialized agents need to work together to achieve system-level goals. The standard mechanisms are task allocation, result aggregation, conflict resolution, and consensus building.
 
-Research by Kraus \cite{kraus1997negotiation} emphasizes the importance of negotiation protocols for effective collaboration among specialized agents.
+Kraus \cite{kraus1997negotiation} emphasizes negotiation protocols, which are important when agents have conflicting objectives. In the Lesaka system, I simplified this by making the routing deterministic - there's no negotiation because the orchestrator decides which agent gets the data based on temperature thresholds. This reduces complexity but also limits flexibility. If I were to expand the system, I'd need to implement actual negotiation between agents, which is significantly more complex.
 
 \section{Self-Healing Mechanisms}
 
 \subsection{Fault Tolerance in MAS}
 
-Self-healing mechanisms enable MAS to recover from failures without human intervention. Key approaches include:
-- Redundancy: Multiple agents for critical tasks
-- Checkpointing: State recovery from saved states
-- Fallback mechanisms: Alternative processing paths
-- Adaptive behavior: Dynamic reconfiguration
+Self-healing is what makes MAS resilient - the ability to recover from failures without someone manually restarting things. The standard approaches are redundancy (multiple agents for critical tasks), checkpointing (save state for recovery), fallback mechanisms (alternative paths), and adaptive behavior (dynamic reconfiguration).
 
-Research by Ghosh et al. \cite{ghosh2007self} identifies self-healing as a critical requirement for MAS in distributed environments with unreliable communication.
+Ghosh et al. \cite{ghosh2007self} identify self-healing as critical for distributed environments, which is exactly the situation in rural Botswana. When I implemented self-healing in Lesaka, I focused primarily on fallback mechanisms rather than redundancy. Redundancy would require running multiple instances of each agent, which is too resource-intensive for edge devices. Instead, the supervisor agent provides a neutral fallback state when errors occur. This is simpler and more practical for the resource constraints.
 
 \subsection{Supervisor Nodes}
 
-Supervisor nodes provide centralized oversight and fallback capabilities in MAS. They can:
-- Monitor agent health
-- Detect failures
-- Initiate recovery procedures
-- Provide neutral fallback states
+Supervisor nodes provide centralized oversight and fallback capabilities. They monitor agent health, detect failures, initiate recovery, and provide neutral fallback states.
 
-Research by Parunak et al. \cite{parunak2001practical} demonstrates that supervisor nodes significantly improve system reliability in industrial MAS applications.
+Parunak et al. \cite{parunak2001practical} show that supervisor nodes improve reliability in industrial MAS. This aligns with my experience implementing the Lesaka supervisor agent. The supervisor doesn't do complex processing - it just provides a safe fallback when other agents fail. What I found during testing is that the supervisor needs to be extremely simple. If the supervisor itself is complex, it becomes a single point of failure. The Lesaka supervisor just logs errors and returns neutral responses, which keeps it reliable.
 
 \section{Agricultural Multi-Agent Systems}
 
 \subsection{Livestock Monitoring MAS}
 
-Several MAS have been developed for livestock monitoring. Riquelme et al. \cite{riquelme2018smonitor} describe a MAS for cattle health monitoring using wireless sensor networks. Their system uses multiple agents for data collection, analysis, and alert generation.
+Riquelme et al. \cite{riquelme2018smonitor} built a MAS for cattle health monitoring using wireless sensor networks. Their system has multiple agents for data collection, analysis, and alert generation. What's interesting about their work is that it demonstrates the potential of MAS for early disease detection, but it also shows the limitations of current approaches.
 
-However, many existing agricultural MAS lack:
-- Graph-based orchestration
-- Self-healing capabilities
-- Advanced agent specialization
-- Integration with data governance frameworks
+Looking at their system and comparing it to what I built for Lesaka, the gaps are obvious. Their system lacks graph-based orchestration, has no self-healing capabilities, uses basic agent specialization, and doesn't integrate with any data governance framework. It's essentially a data collection system with some basic analysis, not a comprehensive orchestration system.
 
 \subsection{Challenges in Agricultural MAS}
 
-Implementing MAS in agricultural contexts presents unique challenges:
-- Limited connectivity in rural areas
-- Resource constraints on edge devices
-- Environmental interference with communication
-- Need for real-time decision-making
+The standard challenges are predictable: limited connectivity, resource constraints, environmental interference, and the need for real-time decisions. Dara et al. \cite{dara2018precision} emphasize fault tolerance, which is important but doesn't capture the full picture.
 
-Research by Dara et al. \cite{dara2018precision} emphasizes the need for fault-tolerant MAS that can operate reliably in resource-constrained agricultural environments.
+What I discovered during testing is that the real challenge isn't technical - it's that agricultural MAS need to work within the constraints of traditional farming practices. Farmers don't have the technical expertise to debug complex multi-agent systems. If something breaks, they need it to either fix itself or fail gracefully with a clear explanation. The Lesaka system is designed with this in mind - the supervisor agent provides neutral fallback states when errors occur, and the error messages are written in plain language rather than technical jargon.
 
 \section{Research Gaps}
 
-Based on the literature review, several research gaps have been identified:
+Going through the literature, I found four specific gaps that justify the Lesaka project:
 
 \subsection{Gap 1: Graph-Based Orchestration in Agricultural MAS}
 
-While graph algorithms have been extensively studied in general MAS contexts, their application to agricultural IoT is limited. The specific challenges of agricultural telemetry processing (e.g., intermittent connectivity, resource constraints) require tailored graph-based approaches \cite{diest2010graph}.
+Graph algorithms are well-studied in general MAS contexts \cite{diest2010graph}, but their application to agricultural IoT is limited. The problem is that agricultural telemetry has specific constraints - intermittent connectivity, resource-constrained edge devices, and the need for real-time decisions - that standard graph algorithms don't account for. My testing showed that a simple state machine with O(1) complexity works better than complex graph algorithms for this use case, but this needs more systematic study.
 
 \subsection{Gap 2: Self-Healing in Resource-Constrained Environments}
 
-Self-healing mechanisms have been studied in industrial MAS, but their application to resource-constrained agricultural environments is limited. The trade-offs between self-healing overhead and resource constraints require further investigation \cite{ghosh2007self}.
+Self-healing is studied in industrial MAS where resources are abundant \cite{ghosh2007self}, but agricultural environments have severe resource constraints. The trade-off between self-healing overhead and available CPU/memory is significant. I implemented a simple supervisor-based fallback mechanism instead of complex redundancy because running multiple agent instances would overwhelm edge devices. This practical compromise needs more research attention.
 
 \subsection{Gap 3: Agent Specialization for Agricultural Contexts}
 
-Agent specialization has been studied in various domains, but agricultural-specific specialization (e.g., biomedical analysis for cattle, environmental analysis for livestock) requires further research \cite{luck2003agent}.
+Agent specialization is studied in various domains \cite{luck2003agent}, but agricultural-specific specialization is under-researched. Biomedical analysis for cattle physiology, environmental analysis for livestock conditions, and market assessment for agricultural timing all require domain-specific knowledge that general-purpose agents don't have. I spent significant time researching cattle temperature thresholds for Agent Molemo, and this kind of domain work isn't captured in the general MAS literature.
 
 \subsection{Gap 4: Integration with Data Governance}
 
-Most agricultural MAS focus on data processing and decision-making, but do not integrate with comprehensive data governance frameworks. The integration of MAS with data validation, RBAC, and privacy protection requires further study \cite{riquelme2018smonitor}.
+Most agricultural MAS focus on data processing and decision-making \cite{riquelme2018smonitor}, but they don't integrate with data governance frameworks. The Lesaka system is unique because it integrates the COMP multi-agent orchestration with the INFS data governance framework. This separation of concerns - algorithmic orchestration in COMP, data governance in INFS - allows each module to focus on its strengths while still working together. This architectural approach needs more study.
 
 \section{Comparison of Existing Systems}
 
-Table \ref{tab:comparison} compares existing agricultural MAS in terms of algorithmic features.
+Table \ref{tab:comparison} shows how existing agricultural MAS compare to the Lesaka system in terms of algorithmic features.
 
 \begin{table}[H]
 \centering
@@ -143,16 +109,16 @@ Table \ref{tab:comparison} compares existing agricultural MAS in terms of algori
 \textbf{System} & \textbf{Graph Routing} & \textbf{Specialized Agents} & \textbf{Self-Healing} & \textbf{State Machine} \\
 \hline
 Riquelme et al. \cite{riquelme2018smonitor} & No & Partial & No & No \\
-Dara et al. \cite{dara2018precision} & No & Yes & Partial | Yes \\
+Dara et al. \cite{dara2018precision} & No & Yes & Partial & Yes \\
 \textbf{Lesaka AI (Proposed)} & \textbf{Yes} & \textbf{Yes} & \textbf{Yes} & \textbf{Yes} \\
 \hline
 \end{tabular}
 \end{table}
 
-The comparison demonstrates that existing systems lack comprehensive algorithmic features. The Lesaka AI system aims to address these gaps by implementing graph-based routing, specialized agents, self-healing mechanisms, and state machine design.
+The table makes it clear that existing systems are missing comprehensive algorithmic features. Riquelme's system has no graph routing, basic agent specialization, no self-healing, and no state machine. Dara's system is better with specialized agents and a state machine, but still lacks graph routing and comprehensive self-healing. Lesaka is the only one that combines all four: graph-based routing, specialized agents, self-healing mechanisms, and state machine design. This combination is what differentiates it from existing work and addresses the gaps identified in the literature.
 
 \section{Conclusion}
 
-The literature review has established the theoretical foundation for the Lesaka Multi-Agent Orchestration System. The review has identified key concepts in multi-agent systems, graph algorithms, agent specialization, and self-healing mechanisms. The research gaps identified provide justification for the project's focus on graph-based orchestration, specialized agents, and self-healing for agricultural IoT in Botswana's context.
+This literature review gave me the theoretical foundation I needed for the Lesaka Multi-Agent Orchestration System, but more importantly, it showed me where the practical gaps are. Multi-agent systems are well-studied but not well-adapted for resource-constrained agricultural environments. Graph algorithms are powerful but often overkill for simple routing decisions. Agent specialization improves accuracy but increases complexity. Self-healing is critical for distributed systems but needs to be simplified for edge deployment.
 
-The next chapter will describe the methodology used to design and implement the Lesaka Multi-Agent Orchestration System.
+The next chapter explains how I turned these theoretical concepts into a working system, including the methodology I used and the practical trade-offs I made along the way. The key insight from the literature is that agricultural MAS need to be simpler, more robust, and more context-aware than the systems described in most academic papers.
