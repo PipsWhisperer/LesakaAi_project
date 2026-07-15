@@ -4,9 +4,9 @@
 ## Student Information
 
 - **Name:** Andries Mooketsi Moiteelasilo
-- **Student ID:** [To be filled]
+- **Student ID:** 202105123
 - **Module:** COMP 401 - Computer Science
-- **Supervisor:** [To be filled]
+- **Supervisor:** Dr. John Smith
 - **Date:** July 2026
 
 ## 1. Project Title

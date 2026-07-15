@@ -184,14 +184,20 @@ export function Reports({ onNavigate }: ReportsProps) {
 
           {/* NDVI Vegetation Density Heat Map */}
           <div className="bg-white rounded-xl border border-gray-200 p-5 overflow-hidden">
-            <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+            <div className="flex items-start justify-between mb-4 flex-wrap gap-3">
               <div>
                 <h3 className="text-text-dark break-words" style={{ fontWeight: 600 }}>Agent Thekiso NDVI Vegetation Density Matrix</h3>
                 <p className="text-gray-500 break-words" style={{ fontSize: '0.75rem' }}>Normalised Difference Vegetation Index — 7-day composite | Green=High Density, Brown=Low Density</p>
               </div>
+              {/* BMC/EU Export Price Ticker */}
+              <div className="flex items-center gap-2 px-3 py-2 rounded-lg border border-secondary/30 bg-secondary/5 flex-shrink-0 whitespace-nowrap">
+                <div className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
+                <span className="text-secondary" style={{ fontSize: '0.75rem', fontWeight: 700 }}>BMC/EU Export Price: P37.50/kg</span>
+                <span className="px-1.5 py-0.5 bg-success/10 text-success rounded" style={{ fontSize: '0.65rem', fontWeight: 700 }}>Trend: +12%</span>
+              </div>
             </div>
-            <div className="rounded-xl overflow-hidden" style={{ height: '200px', position: 'relative' }}>
-              {/* NDVI grid simulation */}
+            <div className="rounded-xl overflow-hidden" style={{ height: '240px', position: 'relative' }}>
+              {/* NDVI gradient grid */}
               <div className="absolute inset-0" style={{ display: 'grid', gridTemplateColumns: 'repeat(20, 1fr)', gridTemplateRows: 'repeat(10, 1fr)' }}>
                 {Array.from({ length: 200 }).map((_, i) => {
                   const col = i % 20;
@@ -204,17 +210,23 @@ export function Reports({ onNavigate }: ReportsProps) {
                   return <div key={i} style={{ backgroundColor: `rgb(${r},${g},${b})` }} />;
                 })}
               </div>
-              {/* Overlay labels */}
-              <div className="absolute inset-0 flex items-end p-3">
-                <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-lg px-3 py-1.5 flex-wrap">
-                  <span className="text-gray-700 whitespace-nowrap" style={{ fontSize: '0.65rem', fontWeight: 600 }}>NDVI INDEX:</span>
-                  {[{ label: 'Dense', color: '#2E7D32' }, { label: 'Moderate', color: '#8BC34A' }, { label: 'Sparse', color: '#FFC107' }, { label: 'Bare', color: '#8B5A2B' }].map(({ label, color }) => (
-                    <div key={label} className="flex items-center gap-1 whitespace-nowrap">
-                      <div className="w-3 h-3 rounded-sm flex-shrink-0" style={{ backgroundColor: color }} />
-                      <span style={{ fontSize: '0.65rem' }}>{label}</span>
-                    </div>
-                  ))}
+              {/* Weight Readiness HUD Overlay */}
+              <div className="absolute top-3 left-3">
+                <div className="flex items-center gap-2 px-3 py-2 rounded-lg shadow-lg" style={{ backgroundColor: '#2E7D32' }}>
+                  <div className="w-2.5 h-2.5 rounded-full bg-white animate-pulse" />
+                  <span className="text-white whitespace-nowrap" style={{ fontSize: '0.7rem', fontWeight: 700 }}>PRIME WEIGHT STATUS: EXPORT READY</span>
                 </div>
+                <p className="text-white/80 mt-1 px-1 whitespace-nowrap" style={{ fontSize: '0.6rem' }}>NDVI &gt; 0.45 — Camp Alpha Eligible</p>
+              </div>
+              {/* Legend overlay bottom */}
+              <div className="absolute inset-x-0 bottom-0 p-3 flex items-center gap-2 bg-gradient-to-t from-black/60 to-transparent flex-wrap">
+                <span className="text-white whitespace-nowrap" style={{ fontSize: '0.65rem', fontWeight: 600 }}>NDVI:</span>
+                {[{ label: 'Dense (>0.6)', color: '#2E7D32' }, { label: 'Moderate (0.45)', color: '#8BC34A' }, { label: 'Sparse (0.25)', color: '#FFC107' }, { label: 'Bare (<0.1)', color: '#8B5A2B' }].map(({ label, color }) => (
+                  <div key={label} className="flex items-center gap-1 whitespace-nowrap">
+                    <div className="w-2.5 h-2.5 rounded-sm flex-shrink-0" style={{ backgroundColor: color }} />
+                    <span className="text-white/90" style={{ fontSize: '0.6rem' }}>{label}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

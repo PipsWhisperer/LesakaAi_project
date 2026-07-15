@@ -10,8 +10,7 @@ interface BillingProps {
 export function Billing({ onNavigate }: BillingProps) {
   const currentPlan = {
     name: 'Enterprise Site Plan',
-    price: 10950,
-    currency: 'BWP',
+    bwpPrice: 'P7,990',
     billingCycle: 'monthly',
     devicesIncluded: 1200,
     devicesUsed: 1192,
@@ -27,17 +26,17 @@ export function Billing({ onNavigate }: BillingProps) {
   };
 
   const invoices = [
-    { id: 'INV-2026-005', date: 'May 15, 2026', amount: 10950, status: 'paid' },
-    { id: 'INV-2026-004', date: 'Apr 15, 2026', amount: 10950, status: 'paid' },
-    { id: 'INV-2026-003', date: 'Mar 15, 2026', amount: 10950, status: 'paid' },
-    { id: 'INV-2026-002', date: 'Feb 15, 2026', amount: 10950, status: 'paid' },
-    { id: 'INV-2026-001', date: 'Jan 15, 2026', amount: 10950, status: 'paid' },
+    { id: 'INV-2026-005', date: 'May 15, 2026', amount: 'P7,990', status: 'paid' },
+    { id: 'INV-2026-004', date: 'Apr 15, 2026', amount: 'P7,990', status: 'paid' },
+    { id: 'INV-2026-003', date: 'Mar 15, 2026', amount: 'P7,990', status: 'paid' },
+    { id: 'INV-2026-002', date: 'Feb 15, 2026', amount: 'P7,990', status: 'paid' },
+    { id: 'INV-2026-001', date: 'Jan 15, 2026', amount: 'P7,990', status: 'paid' },
   ];
 
   const plans = [
-    { name: 'Starter', price: 1350, devices: 50, popular: false },
-    { name: 'Professional', price: 4050, devices: 250, popular: false },
-    { name: 'Enterprise', price: 10950, devices: 1200, popular: true },
+    { name: 'Entry', tier: 'Tier 1', bwpPrice: 'P990', devices: 50, popular: false },
+    { name: 'Professional', tier: 'Tier 2', bwpPrice: 'P2,990', devices: 250, popular: false },
+    { name: 'Enterprise', tier: 'Tier 3', bwpPrice: 'P7,990', devices: 1200, popular: true },
   ];
 
   return (
@@ -49,7 +48,7 @@ export function Billing({ onNavigate }: BillingProps) {
             <p className="text-white/80 mb-1 break-words" style={{ fontSize: '0.875rem' }}>Active Commercial Subscription</p>
             <h2 className="mb-2 break-words" style={{ fontSize: '1.75rem', fontWeight: 700 }}>{currentPlan.name}</h2>
             <div className="flex items-baseline gap-1 flex-wrap">
-              <span style={{ fontSize: '2rem', fontWeight: 700 }}>P{currentPlan.price}</span>
+              <span className="whitespace-nowrap" style={{ fontSize: '2rem', fontWeight: 700 }}>{currentPlan.bwpPrice}</span>
               <span className="text-white/80">/ month</span>
             </div>
           </div>
@@ -111,9 +110,10 @@ export function Billing({ onNavigate }: BillingProps) {
                 </div>
               )}
               
+              <p className="text-gray-400 mb-1 break-words" style={{ fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.05em' }}>{plan.tier}</p>
               <h4 className="text-text-dark mb-2 break-words" style={{ fontWeight: 600, fontSize: '1.125rem' }}>{plan.name}</h4>
               <div className="flex items-baseline gap-1 mb-3 flex-wrap">
-                <span className="text-text-dark whitespace-nowrap" style={{ fontSize: '1.75rem', fontWeight: 700 }}>${plan.price}</span>
+                <span className="text-text-dark whitespace-nowrap" style={{ fontSize: '1.75rem', fontWeight: 700 }}>{plan.bwpPrice}</span>
                 <span className="text-gray-500 whitespace-nowrap" style={{ fontSize: '0.875rem' }}>/ month</span>
               </div>
               <p className="text-gray-600 mb-4 break-words" style={{ fontSize: '0.875rem' }}>
@@ -185,7 +185,7 @@ export function Billing({ onNavigate }: BillingProps) {
               </div>
               <div className="flex items-center justify-between text-gray-600 flex-wrap gap-2" style={{ fontSize: '0.875rem' }}>
                 <span className="break-words">{invoice.date}</span>
-                <span style={{ fontWeight: 600 }} className="whitespace-nowrap">${invoice.amount}</span>
+                <span style={{ fontWeight: 600 }} className="whitespace-nowrap">{invoice.amount}</span>
               </div>
               <motion.button
                 className="mt-2 text-primary flex items-center gap-1"
@@ -216,7 +216,7 @@ export function Billing({ onNavigate }: BillingProps) {
                 <tr key={index} className="hover:bg-gray-50">
                   <td className="px-6 py-4 text-text-dark whitespace-nowrap" style={{ fontWeight: 600 }}>{invoice.id}</td>
                   <td className="px-6 py-4 text-gray-700 whitespace-nowrap">{invoice.date}</td>
-                  <td className="px-6 py-4 text-gray-700 whitespace-nowrap" style={{ fontWeight: 600 }}>${invoice.amount}</td>
+                  <td className="px-6 py-4 text-gray-700 whitespace-nowrap" style={{ fontWeight: 600 }}>{invoice.amount}</td>
                   <td className="px-6 py-4">
                     <span className="px-2 py-1 bg-success/10 text-success rounded whitespace-nowrap" style={{ fontSize: '0.875rem', fontWeight: 500 }}>
                       Paid

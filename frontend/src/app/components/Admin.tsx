@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Users, Package, CheckSquare, Search, Plus, Edit, Trash2, ChevronDown, Check } from 'lucide-react';
+import { Users, Package, CheckSquare, Search, Plus, Edit, Trash2, ChevronDown, Check, Shield, FileText, Lock, Activity } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Screen } from '../App';
 
@@ -22,7 +22,7 @@ export function Admin({ onNavigate }: AdminProps) {
     { id: 8, label: 'Alert thresholds configured for this node', checked: false },
   ]);
 
-  const workspaces = ['Lesaka AI | Tracking & Veterinary Hub', 'Greenfield Ranch'];
+  const workspaces = ['Lesaka AI | Tracking & Veterinary Hub', 'Greenfield Ranch', 'Orapa Cluster', 'Ghanzi Feedlot'];
 
   const toggleChecklist = (id: number) => {
     setChecklistItems(prev => prev.map(item => item.id === id ? { ...item, checked: !item.checked } : item));
@@ -30,9 +30,9 @@ export function Admin({ onNavigate }: AdminProps) {
 
   const clients = [
     { id: 1, name: 'Lesaka AI | Tracking & Veterinary Hub', contact: 'Andries Mooketsi Moiteelasilo', email: 'andries@lesakaai.com', devices: 1240, status: 'active', plan: 'Enterprise' },
-    { id: 2, name: 'Sunset Farms', contact: 'Jane Smith', email: 'jane@sunset.com', devices: 842, status: 'active', plan: 'Professional' },
-    { id: 3, name: 'Valley View Ranch', contact: 'Bob Johnson', email: 'bob@valley.com', devices: 523, status: 'active', plan: 'Enterprise' },
-    { id: 4, name: 'Mountain Peak Cattle', contact: 'Alice Brown', email: 'alice@mountain.com', devices: 289, status: 'active', plan: 'Professional' },
+    { id: 2, name: 'Greenfield Ranch', contact: 'Jane Smith', email: 'jane@greenfield.co.bw', devices: 842, status: 'active', plan: 'Professional' },
+    { id: 3, name: 'Orapa Cluster', contact: 'Thabo Kgosi', email: 'thabo@orapa.co.bw', devices: 618, status: 'active', plan: 'Enterprise' },
+    { id: 4, name: 'Ghanzi Feedlot', contact: 'Lesego Modise', email: 'lesego@ghanzifeedlot.co.bw', devices: 374, status: 'active', plan: 'Professional' },
   ];
 
   const inventory = [
@@ -139,6 +139,9 @@ export function Admin({ onNavigate }: AdminProps) {
           { id: 'clients', label: 'Client Tenants', icon: Users },
           { id: 'inventory', label: 'Hardware Asset Inventory', icon: Package },
           { id: 'installations', label: 'Field Installation Checklist', icon: CheckSquare },
+          { id: 'rbac', label: 'RBAC Matrix', icon: Shield },
+          { id: 'audit', label: 'Audit Logs', icon: FileText },
+          { id: 'security', label: 'Security Status', icon: Lock },
         ].map(tab => {
           const Icon = tab.icon;
           return (
@@ -393,6 +396,246 @@ export function Admin({ onNavigate }: AdminProps) {
           </div>
         </motion.div>
       )}
+
+      {/* RBAC Matrix - INFS 402 Enhancement */}
+      {activeTab === 'rbac' && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="space-y-4"
+        >
+          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <div className="p-4 border-b border-gray-200">
+              <h3 className="text-text-dark break-words" style={{ fontWeight: 600 }}>Enhanced RBAC Permission Matrix</h3>
+              <p className="text-gray-500 break-words" style={{ fontSize: '0.75rem' }}>Fine-grained access control for INFS 402 Advanced Data Governance</p>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-4 py-3 text-left text-gray-600 whitespace-nowrap" style={{ fontSize: '0.875rem', fontWeight: 600 }}>Permission</th>
+                    <th className="px-4 py-3 text-center text-gray-600 whitespace-nowrap" style={{ fontSize: '0.875rem', fontWeight: 600 }}>Admin</th>
+                    <th className="px-4 py-3 text-center text-gray-600 whitespace-nowrap" style={{ fontSize: '0.875rem', fontWeight: 600 }}>Broker</th>
+                    <th className="px-4 py-3 text-center text-gray-600 whitespace-nowrap" style={{ fontSize: '0.875rem', fontWeight: 600 }}>Farmer</th>
+                    <th className="px-4 py-3 text-center text-gray-600 whitespace-nowrap" style={{ fontSize: '0.875rem', fontWeight: 600 }}>Viewer</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {[
+                    { perm: 'View Telemetry Data', admin: true, broker: true, farmer: true, viewer: true },
+                    { perm: 'Manage Cattle Records', admin: true, broker: true, farmer: true, viewer: false },
+                    { perm: 'Configure Geofences', admin: true, broker: true, farmer: true, viewer: false },
+                    { perm: 'Access Audit Logs', admin: true, broker: true, farmer: false, viewer: false },
+                    { perm: 'Manage Users', admin: true, broker: false, farmer: false, viewer: false },
+                    { perm: 'System Configuration', admin: true, broker: false, farmer: false, viewer: false },
+                    { perm: 'Export Reports', admin: true, broker: true, farmer: true, viewer: false },
+                    { perm: 'API Access', admin: true, broker: true, farmer: false, viewer: false },
+                  ].map((row, i) => (
+                    <tr key={i} className="hover:bg-gray-50">
+                      <td className="px-4 py-3 text-gray-700 whitespace-nowrap" style={{ fontSize: '0.875rem' }}>{row.perm}</td>
+                      <td className="px-4 py-3 text-center">{row.admin ? <Check className="w-4 h-4 text-success mx-auto" /> : <span className="text-gray-300">—</span>}</td>
+                      <td className="px-4 py-3 text-center">{row.broker ? <Check className="w-4 h-4 text-success mx-auto" /> : <span className="text-gray-300">—</span>}</td>
+                      <td className="px-4 py-3 text-center">{row.farmer ? <Check className="w-4 h-4 text-success mx-auto" /> : <span className="text-gray-300">—</span>}</td>
+                      <td className="px-4 py-3 text-center">{row.viewer ? <Check className="w-4 h-4 text-success mx-auto" /> : <span className="text-gray-300">—</span>}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
+      {/* Audit Logs - INFS 402 Enhancement */}
+      {activeTab === 'audit' && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="space-y-4"
+        >
+          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <div className="p-4 border-b border-gray-200 flex items-center justify-between flex-wrap gap-2">
+              <div>
+                <h3 className="text-text-dark break-words" style={{ fontWeight: 600 }}>Audit Trail Log</h3>
+                <p className="text-gray-500 break-words" style={{ fontSize: '0.75rem' }}>Complete data access and modification tracking</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-1 bg-success/10 text-success rounded whitespace-nowrap" style={{ fontSize: '0.75rem', fontWeight: 500 }}>
+                  Logging Active
+                </span>
+              </div>
+            </div>
+            <div className="overflow-x-auto max-h-96 overflow-y-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50 sticky top-0">
+                  <tr>
+                    <th className="px-4 py-3 text-left text-gray-600 whitespace-nowrap" style={{ fontSize: '0.875rem', fontWeight: 600 }}>Timestamp</th>
+                    <th className="px-4 py-3 text-left text-gray-600 whitespace-nowrap" style={{ fontSize: '0.875rem', fontWeight: 600 }}>User</th>
+                    <th className="px-4 py-3 text-left text-gray-600 whitespace-nowrap" style={{ fontSize: '0.875rem', fontWeight: 600 }}>Action</th>
+                    <th className="px-4 py-3 text-left text-gray-600 whitespace-nowrap" style={{ fontSize: '0.875rem', fontWeight: 600 }}>Resource</th>
+                    <th className="px-4 py-3 text-left text-gray-600 whitespace-nowrap" style={{ fontSize: '0.875rem', fontWeight: 600 }}>IP Address</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {[
+                    { ts: '2026-07-13 10:14:02', user: 'admin@lesakaai.com', action: 'UPDATE', resource: 'cattle/BW-MUN-1109', ip: '192.168.1.45' },
+                    { ts: '2026-07-13 10:12:15', user: 'andries@lesakaai.com', action: 'READ', resource: 'telemetry/all', ip: '192.168.1.45' },
+                    { ts: '2026-07-13 10:08:33', user: 'admin@lesakaai.com', action: 'CREATE', resource: 'user/new', ip: '192.168.1.45' },
+                    { ts: '2026-07-13 09:55:21', user: 'jane@greenfield.co.bw', action: 'READ', resource: 'cattle/list', ip: '41.215.12.89' },
+                    { ts: '2026-07-13 09:42:18', user: 'admin@lesakaai.com', action: 'DELETE', resource: 'alert/45', ip: '192.168.1.45' },
+                  ].map((log, i) => (
+                    <tr key={i} className="hover:bg-gray-50">
+                      <td className="px-4 py-3 text-gray-600 whitespace-nowrap" style={{ fontSize: '0.75rem' }}>{log.ts}</td>
+                      <td className="px-4 py-3 text-gray-700 whitespace-nowrap" style={{ fontSize: '0.875rem' }}>{log.user}</td>
+                      <td className="px-4 py-3">
+                        <span className={`px-2 py-1 rounded whitespace-nowrap ${
+                          log.action === 'CREATE' ? 'bg-success/10 text-success' :
+                          log.action === 'UPDATE' ? 'bg-warning/10 text-warning' :
+                          log.action === 'DELETE' ? 'bg-error/10 text-error' :
+                          'bg-secondary/10 text-secondary'
+                        }`} style={{ fontSize: '0.75rem', fontWeight: 500 }}>{log.action}</span>
+                      </td>
+                      <td className="px-4 py-3 text-gray-700 whitespace-nowrap" style={{ fontSize: '0.875rem' }}>{log.resource}</td>
+                      <td className="px-4 py-3 text-gray-600 whitespace-nowrap" style={{ fontSize: '0.75rem' }}>{log.ip}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
+      {/* Security Status - INFS 402 Enhancement */}
+      {activeTab === 'security' && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="space-y-4"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-white rounded-xl border border-gray-200 p-5">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-success/10 rounded-lg flex items-center justify-center">
+                  <Lock className="w-5 h-5 text-success" />
+                </div>
+                <div>
+                  <h3 className="text-text-dark break-words" style={{ fontWeight: 600 }}>Data Encryption</h3>
+                  <p className="text-gray-500 break-words" style={{ fontSize: '0.75rem' }}>AES-256 at rest and TLS 1.3 in transit</p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600" style={{ fontSize: '0.875rem' }}>Database Encryption</span>
+                  <span className="px-2 py-1 bg-success/10 text-success rounded" style={{ fontSize: '0.75rem', fontWeight: 500 }}>Active</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600" style={{ fontSize: '0.875rem' }}>API Encryption</span>
+                  <span className="px-2 py-1 bg-success/10 text-success rounded" style={{ fontSize: '0.75rem', fontWeight: 500 }}>Active</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600" style={{ fontSize: '0.875rem' }}>Field Encryption</span>
+                  <span className="px-2 py-1 bg-success/10 text-success rounded" style={{ fontSize: '0.75rem', fontWeight: 500 }}>Active</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl border border-gray-200 p-5">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                  <Shield className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-text-dark break-words" style={{ fontWeight: 600 }}>Privacy Compliance</h3>
+                  <p className="text-gray-500 break-words" style={{ fontSize: '0.75rem' }}>GDPR and Botswana Data Protection Act</p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600" style={{ fontSize: '0.875rem' }}>Data Anonymization</span>
+                  <span className="px-2 py-1 bg-success/10 text-success rounded" style={{ fontSize: '0.75rem', fontWeight: 500 }}>Enabled</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600" style={{ fontSize: '0.875rem' }}>Consent Management</span>
+                  <span className="px-2 py-1 bg-success/10 text-success rounded" style={{ fontSize: '0.75rem', fontWeight: 500 }}>Active</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600" style={{ fontSize: '0.875rem' }}>Right to Deletion</span>
+                  <span className="px-2 py-1 bg-success/10 text-success rounded" style={{ fontSize: '0.75rem', fontWeight: 500 }}>Implemented</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl border border-gray-200 p-5">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
+                  <Activity className="w-5 h-5 text-accent" />
+                </div>
+                <div>
+                  <h3 className="text-text-dark break-words" style={{ fontWeight: 600 }}>Security Metrics</h3>
+                  <p className="text-gray-500 break-words" style={{ fontSize: '0.75rem' }}>Real-time security monitoring</p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600" style={{ fontSize: '0.875rem' }}>Failed Login Attempts (24h)</span>
+                  <span className="text-text-dark" style={{ fontSize: '0.875rem', fontWeight: 600 }}>3</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600" style={{ fontSize: '0.875rem' }}>Active Sessions</span>
+                  <span className="text-text-dark" style={{ fontSize: '0.875rem', fontWeight: 600 }}>12</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600" style={{ fontSize: '0.875rem' }}>Security Score</span>
+                  <span className="px-2 py-1 bg-success/10 text-success rounded" style={{ fontSize: '0.75rem', fontWeight: 500 }}>98/100</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl border border-gray-200 p-5">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
+                  <FileText className="w-5 h-5 text-secondary" />
+                </div>
+                <div>
+                  <h3 className="text-text-dark break-words" style={{ fontWeight: 600 }}>Compliance Status</h3>
+                  <p className="text-gray-500 break-words" style={{ fontSize: '0.75rem' }}>Regulatory compliance tracking</p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600" style={{ fontSize: '0.875rem' }}>3NF Database Validation</span>
+                  <span className="px-2 py-1 bg-success/10 text-success rounded" style={{ fontSize: '0.75rem', fontWeight: 500 }}>Compliant</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600" style={{ fontSize: '0.875rem' }}>Data Quality Score</span>
+                  <span className="text-text-dark" style={{ fontSize: '0.875rem', fontWeight: 600 }}>94%</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-600" style={{ fontSize: '0.875rem' }}>Last Audit</span>
+                  <span className="text-gray-600" style={{ fontSize: '0.75rem' }}>2026-07-01</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      )}
+
+      {/* Admin Footer */}
+      <div className="border-t border-gray-200 pt-4 flex items-center justify-between flex-wrap gap-2">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+            <Users className="w-4 h-4 text-white" />
+          </div>
+          <div>
+            <p className="text-text-dark break-words" style={{ fontSize: '0.875rem', fontWeight: 700 }}>Andries Mooketsi Moiteelasilo</p>
+            <p className="text-gray-500 break-words" style={{ fontSize: '0.75rem' }}>System Admin | +267 71 234 567</p>
+          </div>
+        </div>
+        <span className="px-2 py-1 bg-primary/10 text-primary rounded whitespace-nowrap" style={{ fontSize: '0.75rem', fontWeight: 600 }}>
+          Principal System Administrator
+        </span>
+      </div>
     </div>
   );
 }

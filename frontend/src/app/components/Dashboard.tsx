@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, Beef, Radio, Bell, Battery, ChevronRight } from 'lucide-react';
+import { ArrowRight, Beef, Radio, Bell, Battery, TrendingUp } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Screen } from '../App';
 
@@ -52,6 +52,14 @@ export function Dashboard({ onNavigate }: DashboardProps) {
       color: 'bg-success',
       bgColor: 'bg-success/10',
     },
+    {
+      icon: TrendingUp,
+      label: 'Market Export Value (BWP)',
+      value: 'P46.5M',
+      change: '+12% BMC/EU trend',
+      color: 'bg-secondary',
+      bgColor: 'bg-secondary/10',
+    },
   ];
 
   const recentActivity = [
@@ -65,8 +73,8 @@ export function Dashboard({ onNavigate }: DashboardProps) {
     <div className="p-4 md:p-6 space-y-6 max-w-[1600px] mx-auto">
       {/* Welcome Section */}
       <div className="bg-gradient-to-r from-primary to-primary/80 rounded-2xl p-6 text-white">
-        <h2 className="mb-2 break-words" style={{ fontWeight: 700 }}>Welcome back, Andries Mooketsi Moiteelasilo!</h2>
-        <p className="text-white/90 mb-4 break-words">System telemetry nominal. All perimeter daemons operational.</p>
+        <h2 className="mb-1 break-words" style={{ fontWeight: 700 }}>Welcome back, Andries Mooketsi Moiteelasilo.</h2>
+        <p className="text-white/90 mb-4 break-words">Regional Telemetry Nominal. All perimeter daemons operational.</p>
         <motion.button
           onClick={() => onNavigate('map')}
           className="bg-white text-primary px-6 py-2 rounded-lg flex items-center gap-2"
@@ -80,7 +88,7 @@ export function Dashboard({ onNavigate }: DashboardProps) {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
         {stats.map((stat, index) => {
           const Icon = stat.icon;
           return (

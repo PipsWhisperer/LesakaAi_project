@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, MapPin, Radio, Battery, Activity, Calendar, FileText } from 'lucide-react';
+import { ArrowLeft, MapPin, Radio, Battery, Activity, Calendar, FileText, Award } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import { motion } from 'motion/react';
 import { Screen } from '../App';
@@ -18,6 +18,16 @@ export function CattleDetail({ cattleId, onNavigate }: CattleDetailProps) {
     { date: 'Fri', activity: 78 },
     { date: 'Sat', activity: 82 },
     { date: 'Sun', activity: 75 },
+  ];
+
+  const cdmData = [
+    { date: 'Mon', cdm: 302 },
+    { date: 'Tue', cdm: 305 },
+    { date: 'Wed', cdm: 304 },
+    { date: 'Thu', cdm: 309 },
+    { date: 'Fri', cdm: 311 },
+    { date: 'Sat', cdm: 315 },
+    { date: 'Sun', cdm: 318 },
   ];
 
   const cattle = {
@@ -131,35 +141,46 @@ export function CattleDetail({ cattleId, onNavigate }: CattleDetailProps) {
           </div>
         </div>
 
-        {/* Health Trend Chart */}
-        <div className="bg-white rounded-xl border border-gray-200 p-5 overflow-hidden">
-          <div className="flex items-center gap-2 mb-4 flex-wrap">
-            <Activity className="w-5 h-5 text-primary flex-shrink-0" />
-            <h3 className="text-text-dark break-words" style={{ fontWeight: 600 }}>Biological Health & Thermal Trend (7 Days)</h3>
+        {/* Health Trend + CDM Charts */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-white rounded-xl border border-gray-200 p-5 overflow-hidden">
+            <div className="flex items-center gap-2 mb-4 flex-wrap">
+              <Activity className="w-5 h-5 text-primary flex-shrink-0" />
+              <h3 className="text-text-dark break-words" style={{ fontWeight: 600 }}>Biological Health & Thermal Trend (7 Days)</h3>
+            </div>
+            <div className="overflow-x-auto">
+              <ResponsiveContainer width="100%" height={180}>
+                <LineChart data={healthData} id="health-trend-chart">
+                  <XAxis dataKey="date" stroke="#9CA3AF" style={{ fontSize: '0.75rem' }} />
+                  <YAxis stroke="#9CA3AF" style={{ fontSize: '0.75rem' }} />
+                  <Tooltip contentStyle={{ backgroundColor: '#fff', border: '1px solid #E5E7EB', borderRadius: '8px', fontSize: '0.875rem' }} />
+                  <Line type="monotone" dataKey="activity" stroke="#2E7D32" strokeWidth={3} dot={{ fill: '#2E7D32', r: 4 }} activeDot={{ r: 6 }} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
           </div>
-          <div className="overflow-x-auto">
-            <ResponsiveContainer width="100%" height={200}>
-              <LineChart data={healthData}>
-                <XAxis dataKey="date" stroke="#9CA3AF" style={{ fontSize: '0.75rem' }} />
-                <YAxis stroke="#9CA3AF" style={{ fontSize: '0.75rem' }} />
-                <Tooltip 
-                  contentStyle={{ 
-                    backgroundColor: '#fff', 
-                    border: '1px solid #E5E7EB', 
-                    borderRadius: '8px',
-                    fontSize: '0.875rem'
-                  }}
-                />
-                <Line 
-                  type="monotone" 
-                  dataKey="activity" 
-                  stroke="#2E7D32" 
-                  strokeWidth={3}
-                  dot={{ fill: '#2E7D32', r: 4 }}
-                  activeDot={{ r: 6 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+
+          <div className="bg-white rounded-xl border border-gray-200 p-5 overflow-hidden">
+            <div className="flex items-center justify-between gap-2 mb-1 flex-wrap">
+              <div className="flex items-center gap-2 flex-wrap">
+                <Award className="w-5 h-5 text-secondary flex-shrink-0" />
+                <h3 className="text-text-dark break-words" style={{ fontWeight: 600 }}>Cold Dress Mass (CDM) Projection</h3>
+              </div>
+              <span className="px-2 py-0.5 bg-success/10 text-success rounded whitespace-nowrap" style={{ fontSize: '0.7rem', fontWeight: 700 }}>EXPORT READY</span>
+            </div>
+            <p className="text-gray-500 mb-3 break-words" style={{ fontSize: '0.7rem' }}>
+              7-day CDM trend — current: <strong>318 kg</strong> | BMC threshold: &gt;300 kg
+            </p>
+            <div className="overflow-x-auto">
+              <ResponsiveContainer width="100%" height={180}>
+                <LineChart data={cdmData} id="cdm-projection-chart">
+                  <XAxis dataKey="date" stroke="#9CA3AF" style={{ fontSize: '0.75rem' }} />
+                  <YAxis stroke="#9CA3AF" style={{ fontSize: '0.75rem' }} domain={[295, 325]} />
+                  <Tooltip contentStyle={{ backgroundColor: '#fff', border: '1px solid #E5E7EB', borderRadius: '8px', fontSize: '0.875rem' }} formatter={(val: unknown) => [`${val} kg`, 'CDM']} />
+                  <Line type="monotone" dataKey="cdm" stroke="#1565C0" strokeWidth={3} dot={{ fill: '#1565C0', r: 4 }} activeDot={{ r: 6 }} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         </div>
 
@@ -239,7 +260,7 @@ export function CattleDetail({ cattleId, onNavigate }: CattleDetailProps) {
         </div>
 
         {/* Actions */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <motion.button
             className="bg-primary text-white px-6 py-3 rounded-lg flex items-center justify-center gap-2"
             style={{ fontWeight: 600 }}
@@ -247,7 +268,7 @@ export function CattleDetail({ cattleId, onNavigate }: CattleDetailProps) {
             whileTap={{ scale: 0.98 }}
             onClick={() => onNavigate('map')}
           >
-            <MapPin className="w-5 h-5" />
+            <MapPin className="w-5 h-5 flex-shrink-0" />
             <span className="break-words">View on Geofence Map</span>
           </motion.button>
           <motion.button
@@ -256,8 +277,17 @@ export function CattleDetail({ cattleId, onNavigate }: CattleDetailProps) {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
-            <Calendar className="w-5 h-5" />
-            <span className="break-words">View Movement History Stack</span>
+            <Calendar className="w-5 h-5 flex-shrink-0" />
+            <span className="break-words">Movement History Stack</span>
+          </motion.button>
+          <motion.button
+            className="text-white px-6 py-3 rounded-lg flex items-center justify-center gap-2"
+            style={{ fontWeight: 600, backgroundColor: '#1565C0' }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <Award className="w-5 h-5 flex-shrink-0" />
+            <span className="break-words">Initiate BMC Export Certification</span>
           </motion.button>
         </div>
       </div>

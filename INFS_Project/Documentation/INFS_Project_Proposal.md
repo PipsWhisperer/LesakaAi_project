@@ -4,9 +4,9 @@
 ## Student Information
 
 - **Name:** Andries Mooketsi Moiteelasilo
-- **Student ID:** [To be filled]
-- **Module:** INFS 401 - Information Systems
-- **Supervisor:** [To be filled]
+- **Student ID:** 20001371
+- **Module:** INFS 401 - Information Systems and Data Management
+- **Supervisor:** Dr. Sarah Johnson
 - **Date:** July 2026
 
 ## 1. Project Title

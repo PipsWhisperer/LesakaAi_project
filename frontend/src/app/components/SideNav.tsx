@@ -72,7 +72,10 @@ export function SideNav({ currentScreen, onNavigate }: SideNavProps) {
               Andries Mooketsi Moiteelasilo
             </p>
             <p className="text-gray-500 truncate" style={{ fontSize: '0.75rem' }}>
-              System Administrator
+              Principal System Administrator
+            </p>
+            <p className="text-gray-400 truncate" style={{ fontSize: '0.65rem' }}>
+              +267 71 234 567
             </p>
           </div>
         </div>

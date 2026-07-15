@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AlertTriangle, Battery, MapPin, Signal, CheckCircle, Clock } from 'lucide-react';
+import { AlertTriangle, Battery, MapPin, Signal, CheckCircle, Clock, Activity, Zap, Shield } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Screen } from '../App';
 
@@ -11,6 +11,16 @@ export function Alerts({ onNavigate }: AlertsProps) {
   const [filterTab, setFilterTab] = useState<'all' | 'critical' | 'resolved'>('all');
 
   const alerts = [
+    {
+      id: 0,
+      type: 'Regional Price Spike Detected',
+      cattle: 'MARKET-INTELLIGENCE',
+      severity: 'high',
+      time: 'Now',
+      description: 'BMC/EU export price surged to P37.50/kg (+12% trend). Evaluate Camp Alpha herd for immediate sale opportunity. CDM threshold met by 68% of tracked nodes.',
+      status: 'unresolved',
+      icon: AlertTriangle,
+    },
     {
       id: 1,
       type: 'Boundary Geofence Breach',
@@ -111,7 +121,7 @@ export function Alerts({ onNavigate }: AlertsProps) {
         </div>
         <div className="bg-white rounded-xl p-4 border border-gray-200">
           <p className="text-gray-500 mb-1 break-words" style={{ fontSize: '0.75rem' }}>Today</p>
-          <p className="text-text-dark break-words" style={{ fontSize: '1.5rem', fontWeight: 700 }}>3</p>
+          <p className="text-text-dark break-words" style={{ fontSize: '1.5rem', fontWeight: 700 }}>4</p>
         </div>
       </div>
 
@@ -138,7 +148,7 @@ export function Alerts({ onNavigate }: AlertsProps) {
         ))}
       </div>
 
-      {/* LangGraph Terminal */}
+      {/* LangGraph Terminal - COMP 402 Enhancement */}
       <div className="rounded-xl overflow-hidden border border-gray-800" style={{ backgroundColor: '#0D1117' }}>
         <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-700">
           <div className="flex gap-1.5">
@@ -147,23 +157,64 @@ export function Alerts({ onNavigate }: AlertsProps) {
             <div className="w-3 h-3 rounded-full bg-green-400" />
           </div>
           <span className="text-gray-400 font-mono" style={{ fontSize: '0.75rem' }}>LangGraph Supervisor Runtime Execution Trace Log</span>
+          <div className="ml-auto flex items-center gap-2">
+            <span className="px-2 py-0.5 bg-success/20 text-success rounded text-xs font-mono">ASYNC: ACTIVE</span>
+            <span className="px-2 py-0.5 bg-primary/20 text-primary rounded text-xs font-mono">SELF-HEALING: ENABLED</span>
+          </div>
         </div>
         <div className="p-4 font-mono space-y-1" style={{ fontSize: '0.75rem' }}>
           {[
             { ts: '10:14:02Z', line: 'Supervisor :: INIT_ROUTING_MATRIX', color: 'text-blue-400' },
             { ts: '10:14:03Z', line: 'Supervisor -> ROUTE_TO_MOLEMO_HEALTH :: Node=BW-MUN-1109', color: 'text-green-400' },
-            { ts: '10:14:03Z', line: '[Agent Molemo] :: PATHOLOGY_SCAN_INITIATED', color: 'text-yellow-300' },
+            { ts: '10:14:03Z', line: '[Agent Molemo] :: PATHOLOGY_SCAN_INITIATED [ASYNC]', color: 'text-yellow-300' },
             { ts: '10:14:04Z', line: '[Agent Molemo] :: FLAG=CRITICAL_THERMAL_OVERHEAT :: temp=40.5°C', color: 'text-red-400' },
             { ts: '10:14:04Z', line: 'Supervisor -> ROUTE_TO_LOAPI_DAEMON :: Node=BW-MUN-2847', color: 'text-green-400' },
             { ts: '10:14:05Z', line: '[Agent Loapi] :: SIGNAL_DEGRADATION_DETECTED :: dBm=-81', color: 'text-yellow-300' },
             { ts: '10:14:05Z', line: 'Supervisor -> EXCEPTION_ESCALATION :: ExceptionCode=EX_003', color: 'text-red-400' },
-            { ts: '10:14:06Z', line: 'Supervisor -> [END] :: 2 exceptions queued', color: 'text-gray-400' },
+            { ts: '10:14:06Z', line: 'Supervisor -> SELF_HEALING_INITIATED :: Auto-recovery sequence', color: 'text-purple-400' },
+            { ts: '10:14:07Z', line: 'Supervisor -> [END] :: 2 exceptions queued, 1 auto-recovery', color: 'text-gray-400' },
           ].map(({ ts, line, color }, i) => (
             <div key={i} className="flex gap-3 flex-wrap">
               <span className="text-gray-500 whitespace-nowrap">[{ts}]</span>
               <span className={color}>{line}</span>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* COMP 402 System Metrics */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="bg-white rounded-xl border border-gray-200 p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Activity className="w-4 h-4 text-primary" />
+            <span className="text-gray-500" style={{ fontSize: '0.75rem' }}>Async Operations</span>
+          </div>
+          <p className="text-text-dark" style={{ fontSize: '1.25rem', fontWeight: 700 }}>247</p>
+          <p className="text-success" style={{ fontSize: '0.75rem' }}>12 pending</p>
+        </div>
+        <div className="bg-white rounded-xl border border-gray-200 p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Zap className="w-4 h-4 text-warning" />
+            <span className="text-gray-500" style={{ fontSize: '0.75rem' }}>Self-Healing</span>
+          </div>
+          <p className="text-text-dark" style={{ fontSize: '1.25rem', fontWeight: 700 }}>98.7%</p>
+          <p className="text-success" style={{ fontSize: '0.75rem' }}>Success rate</p>
+        </div>
+        <div className="bg-white rounded-xl border border-gray-200 p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Shield className="w-4 h-4 text-secondary" />
+            <span className="text-gray-500" style={{ fontSize: '0.75rem' }}>Thread Safety</span>
+          </div>
+          <p className="text-text-dark" style={{ fontSize: '1.25rem', fontWeight: 700 }}>100%</p>
+          <p className="text-success" style={{ fontSize: '0.75rem' }}>No deadlocks</p>
+        </div>
+        <div className="bg-white rounded-xl border border-gray-200 p-4">
+          <div className="flex items-center gap-2 mb-2">
+            <Clock className="w-4 h-4 text-accent" />
+            <span className="text-gray-500" style={{ fontSize: '0.75rem' }}>Avg Response</span>
+          </div>
+          <p className="text-text-dark" style={{ fontSize: '1.25rem', fontWeight: 700 }}>45ms</p>
+          <p className="text-success" style={{ fontSize: '0.75rem' }}>Within SLA</p>
         </div>
       </div>
 
@@ -177,7 +228,9 @@ export function Alerts({ onNavigate }: AlertsProps) {
             <motion.div
               key={alert.id}
               className={`bg-white rounded-xl p-4 border-2 ${
-                alert.status === 'unresolved' ? severityColors.border : 'border-gray-200'
+                alert.cattle === 'MARKET-INTELLIGENCE'
+                  ? 'border-warning bg-warning/5'
+                  : alert.status === 'unresolved' ? severityColors.border : 'border-gray-200'
               }`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -193,7 +246,14 @@ export function Alerts({ onNavigate }: AlertsProps) {
                   <div className="flex items-start justify-between mb-2 flex-wrap gap-2">
                     <div className="flex-1 min-w-0">
                       <h3 className="text-text-dark mb-1 break-words" style={{ fontWeight: 600 }}>{alert.type}</h3>
-                      <p className="text-gray-600 break-words" style={{ fontSize: '0.875rem' }}>Node: {alert.cattle}</p>
+                      {alert.cattle === 'MARKET-INTELLIGENCE' ? (
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-warning/20 text-warning rounded whitespace-nowrap" style={{ fontSize: '0.7rem', fontWeight: 700 }}>
+                      <span className="w-1.5 h-1.5 rounded-full bg-warning animate-pulse inline-block" />
+                      MARKET INTELLIGENCE FEED
+                    </span>
+                  ) : (
+                    <p className="text-gray-600 break-words" style={{ fontSize: '0.875rem' }}>Node: {alert.cattle}</p>
+                  )}
                     </div>
                     <div className="flex flex-col items-end gap-2 flex-shrink-0">
                       <div className={`px-2 py-1 ${severityColors.bg} ${severityColors.text} rounded whitespace-nowrap`}>

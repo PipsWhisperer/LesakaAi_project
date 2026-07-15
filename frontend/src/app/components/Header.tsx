@@ -54,7 +54,7 @@ export function Header({ currentScreen }: HeaderProps) {
               <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white">
                 <span style={{ fontSize: '0.875rem' }}>AM</span>
               </div>
-              <span className="text-gray-700" style={{ fontSize: '0.875rem' }}>Andries Mooketsi Moiteelasilo</span>
+              <span className="text-gray-700" style={{ fontSize: '0.875rem' }}>Andries M Moiteelasilo</span>
             </div>
           </div>
         </div>

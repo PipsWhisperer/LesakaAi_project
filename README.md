@@ -16,7 +16,7 @@
 
 ## 📋 Overview
 
-Lesaka AI is a dual-track Final Year Project integrating **INFS 401 (Information Systems)** and **COMP 401/402 (Computer Science)** to deliver a robust livestock management solution for rural, network-constrained environments in Botswana (e.g., Orapa, Serowe, Maun, Ghanzi).
+Lesaka AI is a dual-track Final Year Project integrating **INFS 401/402 (Information Systems and Data Management)** and **COMP 401/402 (Computer Science)** to deliver a robust livestock management solution for rural, network-constrained environments in Botswana (e.g., Orapa, Serowe, Maun, Ghanzi).
 
 ### Key Features
 
@@ -210,8 +210,8 @@ python app.py
 
 This repository serves as the technical delivery for the **BIUST Final Year Project** submission. It demonstrates the intersection of:
 
-- **Enterprise Data Governance** (INFS 401/402)
-- **Intelligent Agent Systems** (COMP 401/402)
+- **Enterprise Data Governance** (INFS 401/402 - Information Systems and Data Management)
+- **Intelligent Agent Systems** (COMP 401/402 - Computer Science)
 - **Privacy-by-Design Principles**
 - **Resilient Edge Computing**
 
@@ -219,10 +219,10 @@ This repository serves as the technical delivery for the **BIUST Final Year Proj
 
 | Module | Focus | Implementation |
 |--------|-------|----------------|
-| INFS 401 | 3NF Validation | `lesaka_validation_engine.py` |
-| INFS 402 | RBAC & Privacy | Role-based access control |
-| COMP 401 | Agent Orchestration | `graph_orchestrator.py` |
-| COMP 402 | Async & Self-Healing | Exception handling, fallback states |
+| INFS 401 | 3NF Validation & Database Design | `lesaka_validation_engine.py`, Database schema |
+| INFS 402 | RBAC, Privacy & Advanced Data Governance | Role-based access control, audit logging, encryption |
+| COMP 401 | Agent Orchestration & Graph Algorithms | `graph_orchestrator.py`, routing algorithms |
+| COMP 402 | Async Processing & Self-Healing | Exception handling, fallback states, thread safety |
 
 ## 🤝 Contributing
 

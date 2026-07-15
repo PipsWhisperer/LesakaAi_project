@@ -5,9 +5,13 @@
       
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Remote Cattle Tracking App (Community)</title>
-      <meta name="description" content="Provides real-time cattle tracking, health monitoring, and geofence alerts with detailed analytics and device management for efficient farm operations." />
+      <title>Lesaka AI - Remote Cattle Tracking</title>
+      <meta name="description" content="Advanced IoT-based cattle tracking and veterinary management system for Botswana's livestock industry" />
+      <meta name="theme-color" content="#2E7D32" />
       <meta name="robots" content="noindex, nofollow" />
+      <link rel="manifest" href="/manifest.json" />
+      <link rel="icon" type="image/png" href="/icon-192x192.png" />
+      <link rel="apple-touch-icon" href="/icon-192x192.png" />
       <style>html, body { height: 100%; margin: 0; } #root { height: 100%; }</style>
       
     </head>
@@ -16,6 +20,19 @@
       
       <div id="root"></div>
       <script type="module" src="/src/main.tsx"></script>
+      <script>
+        if ('serviceWorker' in navigator) {
+          window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+              .then(registration => {
+                console.log('Service Worker registered: ', registration);
+              })
+              .catch(registrationError => {
+                console.log('Service Worker registration failed: ', registrationError);
+              });
+          });
+        }
+      </script>
       
     </body>
   </html>
